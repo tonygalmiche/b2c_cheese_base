@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_milk_type_all,milk.type.all,b2c_cheese_base.model_milk_type,,1,1,1,1
+access_product_label_all,product.label.all,b2c_cheese_base.model_product_label,,1,1,1,1
+access_mois_fromage_all,mois.fromage.all,b2c_cheese_base.model_mois_fromage,,1,1,1,1
+access_product_supplierdiscount_all,product.supplierdiscount.all,b2c_cheese_base.model_product_supplierdiscount,,1,1,1,1
+access_contrat_date_client_all,contrat.date.client.all,b2c_cheese_base.model_contrat_date_client,,1,1,1,1
+

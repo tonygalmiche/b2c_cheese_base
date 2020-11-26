@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_stock_product_tree2_inherit" model="ir.ui.view">
+        <field name="name">product.stock.tree.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock_account.view_stock_product_tree2"/>
+        <field name="arch" type="xml">
+
+            <field name="stock_value" position="after">
+                <field name="weight_qty_available" sum="Poids"/>
+                <field name="weight_stock_value" sum="Evaluation" widget="monetary"
+                       options="{'currency_field': 'cost_currency_id'}"/>
+
+            </field>
+            <field name="stock_value" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+
+    </record>
+
+    <record id="product_normal_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.product.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//notebook//page[1]" position="after">
+                <page string="Details">
+                    <group string="Informations">
+                        <group>
+                            <field name="state_id"/>
+                            <field name="country_id" invisible="1"/>
+                            <field name="duree_affinage"/>
+                            <field name="temperature_stock"/>
+                            <field name="traitement_thermique"/>
+                            <field name="milk_type_ids" widget="many2many_checkboxes"/>
+                        </group>
+                        <group>
+                            <field name="type_traçabilite"/>
+                            <field name="douane" invisible="1"/>
+                            <field name="no_agrement_sanitaire"/>
+                            <!--                            <field name="no_agrement_fournisseur"/>-->
+                            <field name="product_label_ids" widget="many2many_checkboxes"/>
+                            <field name="mois_fromage_ids" widget="many2many_checkboxes"/>
+                        </group>
+                    </group>
+                    <group string="Informations Nutritionnelles pour 100g">
+                        <group>
+                            <field name="kcal"/>
+                            <field name="kjoules"/>
+                            <field name="glucides"/>
+                            <field name="glucides_dt_sucre"/>
+                            <field name="mat_grasse_extrait_sec"/>
+                            <field name="mat_grasse_poids_total"/>
+                        </group>
+                        <group>
+                            <field name="sodium"/>
+                            <field name="calcium"/>
+                            <field name="cholesterol"/>
+                            <field name="lipides"/>
+                            <field name="extraitsec"/>
+                            <field name="proteines"/>
+
+                        </group>
+                    </group>
+                    <group string="Extra">
+
+                        <field name="odeur"/>
+                        <field name="texture"/>
+                        <field name="degustation"/>
+                        <field name="ingredient"/>
+                        <field name="emballage"/>
+                    </group>
+                </page>
+            </xpath>
+             <field name="uom_id" position="before">
+     <hr/>
+                <hr/>
+ </field>
+             <field name="uom_id" position="attributes">
+                <attribute name="string">Unité de Stockage</attribute>
+            </field>
+             <field name="uom_po_id" position="attributes">
+                <attribute name="string">Unité d'achat</attribute>
+            </field>
+
+            <field name="uom_po_id" position="after">
+                <hr/>
+                <hr/>
+
+                <label for="product_weight" string="Poids Net / Colis"/>
+                <div class="o_row" name="product_weight">
+                    <field name="product_weight"/>
+                    <span>
+                        Kg
+                    </span>
+                </div>
+
+                <label for="weight" string="Nbr PC / Colis"/>
+                <div class="o_row" name="weight">
+                    <field name="weight"/>
+                    <span> PC
+                        <field name="weight_uom_name" invisible="1"/>
+                    </span>
+                </div>
+                <field name="weight_uom_id" invisible="1"/>
+            </field>
+            <button name="toggle_active" position="before">
+                <button class="oe_stat_button" name="#" type="object" icon="fa-cubes" help="Poids des colis en stock">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="weight_qty_available" widget="statinfo" nolabel="1" class="mr4"/>
+                            <field name="weight_uom_name"/>
+                        </span>
+                        <span class="o_stat_text">En Stock</span>
+                    </div>
+                </button>
+                <button class="oe_stat_button" name="#" type="object" icon="fa-linode" help="Cout des poids en stock">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="weight_stock_value" widget="statinfo" nolabel="1" class="mr4"/>
+                            <field name="stock_value_currency_id"/>
+                        </span>
+                    </div>
+                </button>
+            </button>
+            <field name="barcode" position="attributes">
+                <attribute name="string">code barre interne</attribute>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="product_template_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="barcode" position="attributes">
+                <attribute name="string">code barre interne</attribute>
+            </field>
+
+ <field name="uom_id" position="before">
+     <hr/>
+                <hr/>
+ </field>
+            <field name="uom_id" position="attributes">
+                <attribute name="string">Unité de Stockage</attribute>
+            </field>
+             <field name="uom_po_id" position="attributes">
+                <attribute name="string">Unité d'achat</attribute>
+            </field>
+            <field name="uom_po_id" position="after">
+                <hr/>
+                <hr/>
+ <field name="mode_vente" />
+                <label for="product_weight"  string="Poids Net / Colis"/>
+                <div class="o_row" name="product_weight">
+                    <field name="product_weight"/>
+                    <span>
+                        Kg
+                    </span>
+                </div>
+
+                <label for="weight" string="Nbr PC / Colis"/>
+                <div class="o_row" name="weight">
+                    <field name="weight"/>
+                    <span> PC
+                        <field name="weight_uom_name"  invisible="1"/>
+                    </span>
+                </div>
+                <field name="weight_uom_id" invisible="1"/>
+
+            </field>
+
+            <xpath expr="//page[@name='sales']" position="inside">
+                <group string="Contrat Date ">
+                    <field name="contrat_date_id">
+                        <tree editable="top">
+                            <field name="partner_id"/>
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+
+            <xpath expr="//form//sheet//notebook//page[1]" position="after">
+                <page string="Details">
+                    <group string="Informations">
+                        <group>
+                            <field name="state_id"/>
+                            <field name="country_id" invisible="1"/>
+                            <field name="duree_affinage"/>
+                            <field name="temperature_stock"/>
+                            <field name="traitement_thermique"/>
+                            <field name="milk_type_ids" widget="many2many_checkboxes"/>
+                        </group>
+                        <group>
+                            <field name="type_traçabilite"/>
+                            <field name="douane" invisible="1"/>
+                            <field name="no_agrement_sanitaire"/>
+                            <!--                            <field name="no_agrement_fournisseur"/>-->
+                            <field name="product_label_ids" widget="many2many_checkboxes"/>
+                            <field name="mois_fromage_ids" widget="many2many_checkboxes"/>
+                        </group>
+                    </group>
+                    <group string="Informations Nutritionnelles pour 100g">
+                        <group>
+                            <field name="kcal"/>
+                            <field name="kjoules"/>
+                            <field name="glucides"/>
+                            <field name="glucides_dt_sucre"/>
+                            <field name="mat_grasse_extrait_sec"/>
+                            <field name="mat_grasse_poids_total"/>
+                        </group>
+                        <group>
+                            <field name="sodium"/>
+                            <field name="calcium"/>
+                            <field name="cholesterol"/>
+                            <field name="lipides"/>
+                            <field name="extraitsec"/>
+                            <field name="proteines"/>
+
+                            <field name="eau" />
+                            <field name="humidite_degraisse" />
+                            <field name="dt_sature" />
+                            <field name="sel" />
+                            <field name="phosphore" />
+                            <field name="potassium" />
+                            <field name="magnesium" />
+                            <field name="fer" />
+
+                        </group>
+                    </group>
+                    <group string="Extra">
+
+                        <field name="odeur"/>
+                        <field name="texture"/>
+                        <field name="degustation"/>
+                        <field name="ingredient"/>
+                        <field name="emballage"/>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="milk_type_act">
+        <field name="name">Type de Lait</field>
+        <field name="res_model">milk.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_milk_type" name="Type de Lait" parent="stock.menu_product_in_config_stock" sequence="4"
+              action="milk_type_act"/>
+    <record model="ir.actions.act_window" id="product_label_category_act">
+        <field name="name">Categories Labels Produit</field>
+        <field name="res_model">product.label.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_product_label_category" name="Categories labels" parent="stock.menu_product_in_config_stock" sequence="5"
+              action="product_label_category_act"/>
+
+    <record model="ir.actions.act_window" id="product_label_act">
+        <field name="name">Label Produit</field>
+        <field name="res_model">product.label</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_product_label" name="labels produits" parent="stock.menu_product_in_config_stock" sequence="5"
+              action="product_label_act"/>
+
+    <record model="ir.actions.act_window" id="mois_fromage_act">
+        <field name="name">Mois du fromage</field>
+        <field name="res_model">mois.fromage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_mois_fromage" name="Mois du fromage" parent="stock.menu_product_in_config_stock" sequence="5"
+              action="mois_fromage_act"/>
+
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook//page[2]/field[@name='move_ids_without_package']" position="before">
+                <field name="purchase_id" invisible="1"/>
+                <field name="is_colis" invisible="0"/>
+            </xpath>
+            <xpath expr="//notebook//page[2]/field[@name='move_ids_without_package']/tree//field[@name='product_uom']" position="after">
+                <field name="weight"  string="Quant réelle" attrs="{'column_invisible': [('parent.is_colis','=',False)]}"/>
+                <field name="weight_uom_id"  string="Unité"  attrs="{'column_invisible': [('parent.is_colis','=',False)]}"/>
+                <field name="product_weight" string="Poids Estimé" attrs="{'column_invisible': [('parent.is_colis','=',False)]}"/>
+
+                <field name="vendor_id" attrs="{'column_invisible': [('parent.purchase_id', '!=', False)]}"  />
+
+<!--            </xpath>-->
+<!--            <xpath expr="//notebook//page[2]/field[@name='move_ids_without_package']/tree//field[@name='remaining_value']" position="attributes">-->
+<!--                <attribute name="invisible">1</attribute>-->
+            </xpath>
+             <xpath expr="//notebook//page[1]" position="attributes">
+                 <attribute name="invisible">1</attribute>
+             </xpath>
+            <field name="partner_id" position="after">
+                <field name="user_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                <field name="team_id" invisible="1"/>
+            </field>
+             <xpath expr="//button[@name='do_print_picking']" position="attributes">
+                     <attribute name="string">Imprimer Bon Prépa</attribute>
+             </xpath>
+             <xpath expr="//button[@name='do_print_picking']" position="after">
+                <button name="do_print_pickingorder" string="Imprimer BL" groups="stock.group_stock_user" type="object" attrs="{'invisible': ['|', ('state', 'not in', ('assigned', 'partially_available')), ('is_locked', '=', False)]}"/>
+             </xpath>
+        </field>
+    </record>
+
+    <record id="vpicktree" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="user_id"/>
+                <field name="date_done"/>
+            </field>
+            <field name="scheduled_date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

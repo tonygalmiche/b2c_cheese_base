@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_product_technical_document">
+
+
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="doc">
+                <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+                     t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                    <t t-call="web.address_layout"/>
+                    <t t-raw="0"/>
+                    <style>
+                        .row{
+                        margin-left:0 !important;
+                        margin-right:0 ! important;
+                        }
+                        .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11,
+                        .col-12,
+                        .col,
+                        .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7,
+                        .col-sm-8,
+                        .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2,
+                        .col-md-3,
+                        .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11,
+                        .col-md-12,
+                        .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6,
+                        .col-lg-7,
+                        .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1,
+                        .col-xl-2,
+                        .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10,
+                        .col-xl-11,
+                        .col-xl-12, .col-xl, .col-xl-auto{
+
+                        padding:0 !important;
+                        }
+                        .table th, .table td {
+                        padding: 0.2rem 0.4rem;
+                        vertical-align: top;
+                        border-right: 1px solid #dee2e6;
+                        border-top: none !important;
+                        }
+                    </style>
+                    <div class="page" style="border:1px solid">
+                        <div class="oe_structure"/>
+
+                        <div class="main" style="border:1px solid; padding: 2%; font-family:Times New Roman;">
+                            <div class="row">
+                                <div class="col-9" style="text-align: center">
+                                    <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"
+                                         alt="Logo" style="display: block;margin: auto;width: 60%;"/>
+                                </div>
+                                <div class="col-3" style="margin-top: 20px;">
+                                    <div>
+                                        <t t-if="docs.barcode">
+                                            <img alt="Barcode" t-if="len(docs.barcode) == 13"
+                                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', docs.barcode, 600, 150)"
+                                                 style="width:100%;height:4rem;"/>
+                                            <img alt="Barcode" t-elif="len(docs.barcode) == 8"
+                                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', docs.barcode, 600, 150)"
+                                                 style="width:100%;height:4rem;"/>
+                                            <img alt="Barcode" t-else=""
+                                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', docs.barcode, 600, 150)"
+                                                 style="width:100%;height:4rem"/>
+                                            <span t-field="docs.barcode" style="text-align: center;display: block;"/>
+                                        </t>
+
+                                        <br/>
+                                        <br/>
+                                        <table class="table table2">
+                                            <tr>
+                                                <td style="border: none !important;">
+                                                    <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold; ">
+                                                        Libellé :
+                                                    </span>
+                                                </td>
+                                                <td style="border: none !important;">
+                                                    <span t-field="doc.default_code"/>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td style="border: none !important;">
+                                                    <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold; ">
+                                                        No Agrément:
+                                                    </span>
+                                                </td>
+                                                <td style="border: none !important;">
+                                                    <span t-field="doc.no_agrement_sanitaire"/>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td style="border: none !important;">
+                                                    <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold; ">
+                                                        No Douane :
+                                                    </span>
+                                                </td>
+                                                <td style="border: none !important;">
+                                                    <span t-field="doc.douane"/>
+                                                </td>
+
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h2>
+                                        <strong t-field="docs.name"/>
+                                    </h2>
+
+                                    <br/>
+
+                                    <t t-foreach="doc.product_label_ids" t-as="l">
+                                        <h6 t-field="l.libelle" style="padding-left: 18px; ">
+
+                                        </h6>
+                                    </t>
+                                </div>
+                                <div class="row">
+                                    <t t-foreach="doc.product_label_ids" t-as="label">
+                                        <div class="col-1">
+                                            <img t-if="label.logo_label" t-att-src="image_data_uri(label.logo_label)"
+                                                 class="float-left" style="width: 70px;height: 70px;padding: 5px;"/>
+                                        </div>
+                                    </t>
+                                    <div style="width: 70px;"/>
+                                    <t t-foreach="doc.milk_type_ids" t-as="milk">
+                                        <div class="col-1" style="display:block;margin: 0 0 0 auto;">
+                                            <img t-if="milk.logo" t-att-src="image_data_uri(milk.logo)"
+                                                 class="float-left" style="width: 70px;height: 70px;padding: 5px;"/>
+                                        </div>
+                                    </t>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <img t-if="doc.image" t-att-src="image_data_uri(doc.image)"
+                                             class="float-left" style="width:100%;"/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+
+                                        <strong style="font-weight: bold; left:0;font-family:Times New Roman;padding: 10px;">
+                                            Valeurs nutritionnelles / par 100g :
+                                        </strong>
+                                        <br/>
+                                        <br/>
+
+
+
+                                    </div>
+                                    <div class="col-7">
+                                        <div>
+                                            <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold;  padding: 18px; ">
+                                                Meilleur période de dégustation:
+                                            </span>
+                                            <!--                                <strong t-esc="', '.join(map(lambda x: (x.name), doc.mois_fromage_ids))"/>-->
+                                            <table class="table">
+                                                <tbody>
+
+                                                    <tr style="font-family:Times New Roman;  font-size: 18px;  padding: 18px; margin: 25px;  border:1px solid">
+                                                        <t t-foreach="doc.mois_fromage_all" t-as="m">
+                                                            <td style="border:1px solid; background-color:#ccc;"
+                                                                t-if="m not in  doc.mois_fromage_ids">
+                                                                <span t-field="m.name"/>
+                                                            </td>
+                                                            <td style="border:1px solid; background-color:#79CD49;"
+                                                                t-if="m in  doc.mois_fromage_ids">
+                                                                <span t-field="m.name"/>
+                                                            </td>
+
+                                                        </t>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br/>
+                                            <br/>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+
+                                                <table class="table table2" style=" width: 100%;">
+
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Origine:</strong>
+                                                        </td>
+                                                        <td style="background-color:#eee">
+                                                            <span t-field="doc.country_id"/>
+                                                        </td>
+                                                        <td>
+                                                            <strong>
+                                                                <t t-if="doc.use_time">
+                                                                    DLUO:
+                                                                </t>
+                                                                <t t-if="doc.life_time">
+                                                                    DDM:
+                                                                </t>
+
+                                                            </strong>
+                                                        </td>
+                                                        <td style="background-color:#eee">
+                                                            <t t-if="doc.use_time">
+                                                                <span t-field="doc.use_time"/>
+                                                            </t>
+                                                            <t t-if="doc.life_time">
+                                                                <span t-field="doc.life_time"/>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Affinage:</strong>
+                                                        </td>
+                                                        <td style="background-color:#eee">
+                                                            <span t-field="doc.duree_affinage"/>
+                                                        </td>
+                                                        <td>
+                                                            <strong>Unité de vente( €/pièce ):</strong>
+                                                        </td>
+                                                        <td style="background-color:#eee">
+                                                            <span t-field="doc.weight_uom_id.name"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>Poids Net:</strong>
+                                                        </td>
+                                                        <td style="background-color:#eee">
+                                                            <span t-field="doc.weight"/>
+                                                        </td>
+                                                        <td>
+                                                            <strong>T° de stockage:</strong>
+                                                        </td>
+                                                        <td style="background-color:#eee">
+                                                            <span t-field="doc.temperature_stock"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                                <br/>
+                                                <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold;  ">
+                                                    Odeur:
+                                                </span>
+                                                <p t-field="doc.odeur"/>
+
+                                                <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold;  ">
+                                                    Texture:
+                                                </span>
+                                                <p t-field="doc.texture"/>
+                                                <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold;  ">
+                                                    Dégustation:
+                                                </span>
+                                                <p t-field="doc.degustation"/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table2" style=" width: 100%;">
+                                            <tr>
+                                                <td style="width:25%;">
+                                                    <strong>Energie:</strong>
+                                                </td>
+                                                <td style="background-color:#eee ;width:25%;" >
+                                                    <span t-field="doc.kcal"/>
+                                                    <span>Kcal</span>
+                                                    <span>/</span>
+                                                    <span t-field="doc.kjoules"/>
+                                                    <span>kJ</span>
+                                                </td>
+                                                <td style="width:25%;"><strong>Sodium:</strong></td>
+                                                <td  style="background-color:#eee;width:50%;"><span t-field="doc.sodium"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>M.G. / ES</strong>
+                                                </td>
+                                                <td style="background-color:#eee">
+                                                    <span t-field="doc.mat_grasse_extrait_sec"/>
+                                                    <span>g</span>
+                                                </td>
+                                                 <td><strong>Calcium</strong></td>
+                                                <td style="background-color:#eee"><span t-field="doc.calcium"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>M.G. / PT</strong>
+                                                </td>
+                                                <td style="background-color:#eee">
+                                                    <span t-field="doc.mat_grasse_poids_total"/>
+                                                    <span>g</span>
+                                                </td>
+                                                 <td><strong>Lipides:</strong></td>
+                                                <td style="background-color:#eee"><span t-field="doc.lipides"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Glucides</strong>
+                                                </td>
+                                                <td style="background-color:#eee">
+                                                    <span t-field="doc.glucides"/>
+                                                </td>
+                                                 <td><strong>Cholesterole:</strong></td>
+                                                <td style="background-color:#eee"><span t-field="doc.cholesterol"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Glucides dt sucre</strong>
+                                                </td>
+                                                <td style="background-color:#eee">
+                                                    <span t-field="doc.glucides_dt_sucre"/>
+                                                </td>
+                                                 <td><strong>Extrait Sec:</strong></td>
+                                                <td style="background-color:#eee"><span t-field="doc.extraitsec"/></td>
+                                            </tr>
+                                            <tr>
+                                                 <td></td>
+                                                <td style="background-color:#eee"></td>
+                                                 <td><strong>Proteines:</strong></td>
+                                                <td style="background-color:#eee"><span t-field="doc.proteines"/></td>
+                                            </tr>
+                                        </table>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-5" style=" padding: 60px;  border:1px solid #ccc;position:relative; ">
+
+                                    <strong style="font-weight: bold; position:absolute;top:0px;left:0;font-family:Times New Roman;padding: 10px;">
+                                        Emballage :
+                                    </strong>
+                                    <br/>
+                                    <br/>
+
+                                    <p t-field="doc.emballage"/>
+
+
+                                </div>
+
+                                <div class="col-7">
+                                    <div style="border:1px solid #ccc; padding:60px; position:relative;">
+                                        <p>
+                                            <strong style="font-weight: bold; position:absolute;top:0px;left:0;font-family:Times New Roman;padding: 10px;">
+                                                Ingrédients:
+                                            </strong>
+
+                                            <p t-field="doc.ingredient"/>
+
+                                        </p>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="footer">
+
+    </div>
+
+            </t>
+        </t>
+    </template>
+    <data>
+        <report
+                id="action_report_product_tech"
+                string="Fiche Technique"
+                model="product.template"
+                report_type="qweb-html"
+                file="b2c_cheese_base.report_product_technical_document"
+                name="b2c_cheese_base.report_product_technical_document"
+        />
+    </data>
+
+
+</odoo>

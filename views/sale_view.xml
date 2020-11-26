@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!--<xpath expr="//field[@name='order_line']//tree//field[@name='product_uom']" position="after">
+            </xpath>-->
+
+            <xpath expr="//sheet[1]" position="inside">
+                <style>
+                    .o_form_view .o_form_sheet_bg {
+                    background: #ffc107;
+                    border-bottom: 1px solid #dee2e6;
+                    position: relative;
+                    }
+                </style>
+            </xpath>
+             <xpath expr='//field[@name="order_line"]//tree//field[@name="price_subtotal"]' position='after'>
+                <field name="echantillion"/>
+            </xpath>
+             <xpath expr='//field[@name="order_line"]//tree//field[@name="price_subtotal"]' position='attributes'>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr='//field[@name="order_line"]//form//field[@name="price_subtotal"]' position='attributes'>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+               <xpath expr='//field[@name="order_line"]//form//field[@name="product_id"]' position='after'>
+                <field name="echantillion"/>
+            </xpath>
+              <xpath expr='//group[@name="sale_total"]' position="attributes">
+                <attribute name="invisible">1</attribute>
+              </xpath>
+            <field name="partner_id" position="after">
+                <field name="mode_facturation"/>
+                <field name="sale_line_count"/>
+                <field name="sale_total_qty"/>
+            </field>
+            <field name="payment_term_id" position="after">
+                <field name="delivery_date"/>
+            </field>
+
+
+        </field>
+    </record>
+
+     <record id="sale_order_view_search_inherit_quotation_inherit" model="ir.ui.view">
+        <field name="name">sale.order.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="arch" type="xml">
+                <filter name="my_quotation" position="after">
+                        <separator/>
+                    <filter string="Facturation a la commande" name="facturation_a_cmd" domain="[('mode_facturation', '=', 'cmde')]"/>
+                    <filter string="Facturation mensuelle" name="facturation_mensuelle" domain="[('mode_facturation', '=', 'mensuel')]"/>
+                </filter>
+
+        </field>
+     </record>
+</odoo>
