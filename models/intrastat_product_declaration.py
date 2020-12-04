@@ -1,7 +1,7 @@
 from odoo import api, fields, models, _
 import odoo.addons.decimal_precision as dp
-
 from lxml import etree
+from odoo.exceptions import Warning
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -246,8 +246,12 @@ class IntrastatProductDeclaration(models.Model):
                 intrastat_transaction = \
                     self._get_intrastat_transaction(inv_line)
 
-                weight, suppl_unit_qty, weight_net = self._get_weight_and_supplunits(
-                    inv_line, hs_code)
+                print('#TEST',invoice,invoice.number)
+                try:
+                    weight, suppl_unit_qty, weight_net = self._get_weight_and_supplunits(inv_line, hs_code)
+                except ValueError:
+                    raise Warning("Problème avec la facture "+str(invoice.number))
+
                 total_inv_weight += weight_net
 
                 amount_company_currency = self._get_amount(inv_line)
