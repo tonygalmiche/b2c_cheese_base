@@ -38,6 +38,7 @@ class ProductionLot(models.Model):
     type_traçabilite = fields.Selection(string='Traçabilité', selection=[('ddm', 'DDM'), ('dlc', 'DLC')],
                                         related="product_id.type_traçabilite")
 
-    _sql_constraints = [
-        ('name_ref_uniq', 'CHECK(1=1)', 'The combination of serial number and product must be unique !'),
-    ]
+
+    # _sql_constraints = [
+    #     ('name_ref_uniq', 'CHECK(1=1)', 'The combination of serial number and product must be unique !'),
+    # ]

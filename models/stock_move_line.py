@@ -177,37 +177,37 @@ class StockMoveLine(models.Model):
         })
 
 
-    @api.onchange('life_use_date')
-    def onchange_contrat_date(self):
-        date_due = self.life_use_date
-        contrat_date_obj = self.env['contrat.date.client'].search(
-            [('partner_id', '=', self.move_id.picking_id.partner_id.id), ('product_id', '=', self.product_id.product_tmpl_id.id)], limit=1)
-        contrat_date = datetime.now() + timedelta(days=contrat_date_obj.name)
-        if contrat_date_obj and contrat_date.date() > date_due.date():
-            warning_mess = {
-                'title': _('Date Produit!'),
-                'message': _(
-                    'Verifiez Contrat date du client.')
-            }
-            return {'warning': warning_mess}
-            # raise UserError(_('Verifiez Contrat date du client'))
-        elif date_due and date_due.date() < datetime.now().date() :
-            # raise UserError(_('Produit expiré'))
-            warning_mess = {
-                'title': _('Date Produit!'),
-                'message': _(
-                    'Produit expiré.')
-            }
-            return {'warning': warning_mess}
-        elif date_due and date_due.date() == datetime.now().date() :
-            warning_mess = {
-                'title': _('Date Produit!'),
-                'message': _(
-                    'Verifiez date expiration produit.')
-            }
-            return {'warning': warning_mess}
+    # @api.onchange('life_use_date')
+    # def onchange_contrat_date(self):
+    #     date_due = self.life_use_date
+    #     contrat_date_obj = self.env['contrat.date.client'].search(
+    #         [('partner_id', '=', self.move_id.picking_id.partner_id.id), ('product_id', '=', self.product_id.product_tmpl_id.id)], limit=1)
+    #     contrat_date = datetime.now() + timedelta(days=contrat_date_obj.name)
+    #     if contrat_date_obj and contrat_date.date() > date_due.date():
+    #         warning_mess = {
+    #             'title': _('Date Produit!'),
+    #             'message': _(
+    #                 'Verifiez Contrat date du client.')
+    #         }
+    #         return {'warning': warning_mess}
+    #         # raise UserError(_('Verifiez Contrat date du client'))
+    #     elif date_due and date_due.date() < datetime.now().date() :
+    #         # raise UserError(_('Produit expiré'))
+    #         warning_mess = {
+    #             'title': _('Date Produit!'),
+    #             'message': _(
+    #                 'Produit expiré.')
+    #         }
+    #         return {'warning': warning_mess}
+    #     elif date_due and date_due.date() == datetime.now().date() :
+    #         warning_mess = {
+    #             'title': _('Date Produit!'),
+    #             'message': _(
+    #                 'Verifiez date expiration produit.')
+    #         }
+    #         return {'warning': warning_mess}
 
-            # raise UserError(_('Verifiez date expiration produit'))
+    #         # raise UserError(_('Verifiez date expiration produit'))
 
 
     status_move = fields.Selection(string='Statut', selection=[('receptionne', 'Réceptionné'), ('manquant', 'Manquant'), ('abime', 'Abimé'), ('autre', 'Autre')], default='receptionne')
