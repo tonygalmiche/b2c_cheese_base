@@ -70,13 +70,26 @@ class ProductTemplate(models.Model):
     milk_type_ids = fields.Many2many('milk.type','product_milk_type_rel','product_id','milk_type_id', string='Type de Lait')
     product_label_ids = fields.Many2many('product.label','product_label_rel','product_id','label_id', string='Labels')
     duree_affinage = fields.Integer(string="Affinage (jours)")
-    texture = fields.Text(string='Texture')
+
+
+    # Présentation / Conseils
+    is_presentation = fields.Text(string='Présentation')
+    is_conseils     = fields.Text(string='Conseils')
+
+    # CARACTÉRISTIQUES ORGANOLEPTIQUES:
+    is_forme   = fields.Char(string='Forme')
+    is_couleur = fields.Char(string='Couleur')
+    texture    = fields.Char(string='Texture')
+
+    degustation = fields.Char(string='Goût / Dégustation')
+    odeur       = fields.Char(string='Odeur')
+
+
+
     type_traçabilite = fields.Selection(string='Traçabilité', selection=[('ddm', 'DDM'), ('dlc', 'DLC')], default='dlc')
 
 
     # type_traçabilite=fields.Selection(string='type de traçabilite', selection=[('dlc', 'DLC'), ('ddm', 'DDM'), ('dluo', 'DLUO')], readonly=True, required=True)
-    odeur=fields.Text(string='Odeur')
-    degustation = fields.Text(string='Dégustation')
     ingredient=fields.Text(string='Description ingrédient')
     douane=fields.Char(string='Nomenclature Douane')
     no_agrement_sanitaire=fields.Char(string='N° Agrément Sanitaire')

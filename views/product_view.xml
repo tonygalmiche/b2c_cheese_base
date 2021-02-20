@@ -26,7 +26,11 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//form//sheet//notebook//page[1]" position="after">
+
+
+
+
+            <!-- <xpath expr="//form//sheet//notebook//page[1]" position="after">
                 <page string="Details">
                     <group string="Informations">
                         <group>
@@ -41,7 +45,6 @@
                             <field name="type_traçabilite"/>
                             <field name="douane" invisible="1"/>
                             <field name="no_agrement_sanitaire"/>
-                            <!--                            <field name="no_agrement_fournisseur"/>-->
                             <field name="product_label_ids" widget="many2many_checkboxes"/>
                             <field name="mois_fromage_ids" widget="many2many_checkboxes"/>
                         </group>
@@ -74,11 +77,15 @@
                         <field name="emballage"/>
                     </group>
                 </page>
-            </xpath>
+            </xpath> -->
+
+
+
+
              <field name="uom_id" position="before">
-     <hr/>
                 <hr/>
- </field>
+                <hr/>
+            </field>
              <field name="uom_id" position="attributes">
                 <attribute name="string">Unité de Stockage</attribute>
             </field>
@@ -187,25 +194,50 @@
             </xpath>
 
             <xpath expr="//form//sheet//notebook//page[1]" position="after">
-                <page string="Details">
-                    <group string="Informations">
+                <page string="Fiche technique">
+                    <group string="Présentation">
+                        <field name="is_presentation" nolabel="1"/>
+                    </group>
+                    <group string="Conseils">
+                        <field name="is_conseils" nolabel="1"/>
+                    </group>
+                    <group string="Caractéristiques générales du produit">
                         <group>
                             <field name="state_id"/>
                             <field name="country_id" invisible="1"/>
-                            <field name="duree_affinage"/>
-                            <field name="temperature_stock"/>
-                            <field name="traitement_thermique"/>
                             <field name="milk_type_ids" widget="many2many_checkboxes"/>
+                            <field name="traitement_thermique"/>
+                            <field name="duree_affinage"/>
                         </group>
                         <group>
                             <field name="type_traçabilite"/>
                             <field name="douane" invisible="1"/>
                             <field name="no_agrement_sanitaire"/>
-                            <!--                            <field name="no_agrement_fournisseur"/>-->
                             <field name="product_label_ids" widget="many2many_checkboxes"/>
                             <field name="mois_fromage_ids" widget="many2many_checkboxes"/>
+                            <field name="temperature_stock"/>
                         </group>
                     </group>
+                    
+
+                    <group string="Caractéristiques Organoleptiques">
+                        <group>
+                            <field name="is_forme"/>
+                            <field name="is_couleur"/>
+                            <field name="texture"/>
+                        </group>
+                       <group>
+                            <field name="degustation"/>
+                            <field name="odeur"/>
+                        </group>
+                    </group>
+
+                    <group string="Ingredients">
+                        <field name="ingredient" nolabel="1"/>
+                    </group>
+
+
+
                     <group string="Informations Nutritionnelles pour 100g">
                         <group>
                             <field name="kcal"/>
@@ -234,12 +266,9 @@
 
                         </group>
                     </group>
-                    <group string="Extra">
 
-                        <field name="odeur"/>
-                        <field name="texture"/>
-                        <field name="degustation"/>
-                        <field name="ingredient"/>
+
+                    <group string="Extra">
                         <field name="emballage"/>
                     </group>
                 </page>
