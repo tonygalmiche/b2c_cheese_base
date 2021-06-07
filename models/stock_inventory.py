@@ -7,7 +7,7 @@ class InventoryLine(models.Model):
     _inherit = "stock.inventory.line"
     _order = ""
 
-    life_use_date = fields.Datetime('DLC/DDM')
+    life_use_date = fields.Datetime('DLC / DDM')
 
 
     @api.onchange('prod_lot_id')

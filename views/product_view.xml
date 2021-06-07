@@ -26,62 +26,6 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-
-
-
-
-            <!-- <xpath expr="//form//sheet//notebook//page[1]" position="after">
-                <page string="Details">
-                    <group string="Informations">
-                        <group>
-                            <field name="state_id"/>
-                            <field name="country_id" invisible="1"/>
-                            <field name="duree_affinage"/>
-                            <field name="temperature_stock"/>
-                            <field name="traitement_thermique"/>
-                            <field name="milk_type_ids" widget="many2many_checkboxes"/>
-                        </group>
-                        <group>
-                            <field name="type_traçabilite"/>
-                            <field name="douane" invisible="1"/>
-                            <field name="no_agrement_sanitaire"/>
-                            <field name="product_label_ids" widget="many2many_checkboxes"/>
-                            <field name="mois_fromage_ids" widget="many2many_checkboxes"/>
-                        </group>
-                    </group>
-                    <group string="Informations Nutritionnelles pour 100g">
-                        <group>
-                            <field name="kcal"/>
-                            <field name="kjoules"/>
-                            <field name="glucides"/>
-                            <field name="glucides_dt_sucre"/>
-                            <field name="mat_grasse_extrait_sec"/>
-                            <field name="mat_grasse_poids_total"/>
-                        </group>
-                        <group>
-                            <field name="sodium"/>
-                            <field name="calcium"/>
-                            <field name="cholesterol"/>
-                            <field name="lipides"/>
-                            <field name="extraitsec"/>
-                            <field name="proteines"/>
-
-                        </group>
-                    </group>
-                    <group string="Extra">
-
-                        <field name="odeur"/>
-                        <field name="texture"/>
-                        <field name="degustation"/>
-                        <field name="ingredient"/>
-                        <field name="emballage"/>
-                    </group>
-                </page>
-            </xpath> -->
-
-
-
-
              <field name="uom_id" position="before">
                 <hr/>
                 <hr/>
@@ -195,6 +139,14 @@
 
             <xpath expr="//form//sheet//notebook//page[1]" position="after">
                 <page string="Fiche technique">
+                    <group>
+                        <group>
+                            <field name="is_creation_le"/>
+                        </group>
+                        <group>
+                            <field name="is_mis_a_jour_le"/>
+                        </group>
+                    </group>
                     <group string="Présentation">
                         <field name="is_presentation" nolabel="1"/>
                     </group>
@@ -203,23 +155,22 @@
                     </group>
                     <group string="Caractéristiques générales du produit">
                         <group>
-                            <field name="state_id"/>
-                            <field name="country_id" invisible="1"/>
-                            <field name="milk_type_ids" widget="many2many_checkboxes"/>
+                            <field name="is_region_id"/>
+                            <field name="milk_type_ids" widget="many2many_tags"/>
                             <field name="traitement_thermique"/>
+                            <field name="is_famille_fromage_id"/>
                             <field name="duree_affinage"/>
+                            <field name="is_croute_comestible"/>
                         </group>
                         <group>
                             <field name="type_traçabilite"/>
-                            <field name="douane" invisible="1"/>
+                            <field name="is_dluo"/>
+                            <field name="is_type_conditionnement"/>
+                            <field name="is_atelier_transformation"/>
                             <field name="no_agrement_sanitaire"/>
-                            <field name="product_label_ids" widget="many2many_checkboxes"/>
-                            <field name="mois_fromage_ids" widget="many2many_checkboxes"/>
                             <field name="temperature_stock"/>
                         </group>
                     </group>
-                    
-
                     <group string="Caractéristiques Organoleptiques">
                         <group>
                             <field name="is_forme"/>
@@ -239,38 +190,9 @@
 
 
                     <group string="Informations Nutritionnelles pour 100g">
-                        <group>
-                            <field name="kcal"/>
-                            <field name="kjoules"/>
-                            <field name="glucides"/>
-                            <field name="glucides_dt_sucre"/>
-                            <field name="mat_grasse_extrait_sec"/>
-                            <field name="mat_grasse_poids_total"/>
-                        </group>
-                        <group>
-                            <field name="sodium"/>
-                            <field name="calcium"/>
-                            <field name="cholesterol"/>
-                            <field name="lipides"/>
-                            <field name="extraitsec"/>
-                            <field name="proteines"/>
-
-                            <field name="eau" />
-                            <field name="humidite_degraisse" />
-                            <field name="dt_sature" />
-                            <field name="sel" />
-                            <field name="phosphore" />
-                            <field name="potassium" />
-                            <field name="magnesium" />
-                            <field name="fer" />
-
-                        </group>
                     </group>
 
 
-                    <group string="Extra">
-                        <field name="emballage"/>
-                    </group>
                 </page>
             </xpath>
 

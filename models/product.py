@@ -10,18 +10,22 @@ from odoo.exceptions import UserError, ValidationError
 
 class MilkType(models.Model):
     _name="milk.type"
+    _description = "Type de lait"
     name=fields.Char('Nom')
     logo=fields.Binary('Logo')
     description=fields.Text('Desciption')
 
+
 class ProductLabelCategory(models.Model):
     _name="product.label.category"
-
+    _description = "ProductLabelCategory"
     name=fields.Char('Categorie')
     note = fields.Text('Note')
 
+
 class ProductLabel(models.Model):
     _name="product.label"
+    _description = "ProductLabel"
     name=fields.Char('Nom du Label')
     libelle=fields.Char('Libelle Label')
     logo_label = fields.Binary('Logo')
@@ -30,23 +34,34 @@ class ProductLabel(models.Model):
 
 class MoisFromage(models.Model):
     _name = "mois.fromage"
-
+    _description = "MoisFromage"
     name = fields.Char('Mois')
+
 
 class ContratDateClient(models.Model):
     _name = 'contrat.date.client'
-
+    _description = "ContratDateClient"
     name = fields.Integer('Contrat Date')
     partner_id = fields.Many2one('res.partner','Client',domain="[('customer','=',True)]")
     product_id = fields.Many2one('product.template','Produit')
 
 
+class IsRegionOrigine(models.Model):
+    _name = "is.region.origine"
+    _description = "Région d'origine"
+    _order = "name"
+    name = fields.Char("Région d'origine")
+
+
+class IsFamilleFromage(models.Model):
+    _name = "is.famille.fromage"
+    _description = "Famille de fromage"
+    _order = "name"
+    name = fields.Char("Région d'origine")
+
+
 class ProductTemplate(models.Model):
     _inherit = "product.template"
-
-    # _sql_constraints = [
-    #     ('default_code_uniq', 'unique (default_code)', 'La reference interne de larticle doit etre unique !')
-    # ]
 
     @api.onchange('default_code')
     @api.multi
@@ -61,20 +76,31 @@ class ProductTemplate(models.Model):
                     raise UserError(_('La reference interne de doit etre unique !'))
 
     contrat_date_id = fields.One2many('contrat.date.client','product_id','Contrat Date')
-    emballage=fields.Text(string='Emballage du Produit')
-    # no_agrement_fournisseur=fields.Float(string='Numero Agrement')
-    state_id = fields.Char(string='Region Origine')
-    country_id = fields.Many2one('res.country', string='Pays Origine',help='Pays Origine du Fromage')
-    temperature_stock =fields.Char(string='T° Stockage')
-    traitement_thermique=fields.Selection(string='Traitement Thermique', selection=[('laitcru', 'Lait Cru'), ('laitthermise', 'Lait Thermise'), ('laitpasteurisé', 'Lait Pasteurise')])
-    milk_type_ids = fields.Many2many('milk.type','product_milk_type_rel','product_id','milk_type_id', string='Type de Lait')
-    product_label_ids = fields.Many2many('product.label','product_label_rel','product_id','label_id', string='Labels')
-    duree_affinage = fields.Integer(string="Affinage (jours)")
 
 
     # Présentation / Conseils
+    is_creation_le   = fields.Date(string='Création le', default=lambda *a: fields.Date.today())
+    is_mis_a_jour_le = fields.Date(string='Mise à jour le')
+
     is_presentation = fields.Text(string='Présentation')
     is_conseils     = fields.Text(string='Conseils')
+
+
+    # CARACTÉRISTIQUES GÉNÉRALES DU PRODUIT:
+    is_region_id          = fields.Many2one('is.region.origine', string="Region d'origine")
+    milk_type_ids         = fields.Many2many('milk.type','product_milk_type_rel','product_id','milk_type_id', string='Type de Lait')
+    traitement_thermique  = fields.Selection(string='Traitement Thermique', selection=[('laitcru', 'Lait Cru'), ('laitthermise', 'Lait Thermise'), ('laitpasteurisé', 'Lait Pasteurise')])
+    is_famille_fromage_id = fields.Many2one('is.famille.fromage', string="Famille de fromage")
+    duree_affinage        = fields.Char(string="Durée d'affinage")
+    is_croute_comestible  = fields.Char(string="Croûte comestible")
+
+    type_traçabilite          = fields.Selection(string='Traçabilité', selection=[('ddm', 'DDM'), ('dlc', 'DLC')], default='dlc')
+    is_dluo                   = fields.Char(string='DLUO')
+    is_type_conditionnement   = fields.Char(string='Type de conditionnement')
+    is_atelier_transformation = fields.Char(string='Atelier de transformation')
+    no_agrement_sanitaire     = fields.Char(string="N° d'agrément fabriquant")
+    temperature_stock         = fields.Char(string='T° de conservation')
+
 
     # CARACTÉRISTIQUES ORGANOLEPTIQUES:
     is_forme   = fields.Char(string='Forme')
@@ -84,44 +110,38 @@ class ProductTemplate(models.Model):
     degustation = fields.Char(string='Goût / Dégustation')
     odeur       = fields.Char(string='Odeur')
 
-
-
-    type_traçabilite = fields.Selection(string='Traçabilité', selection=[('ddm', 'DDM'), ('dlc', 'DLC')], default='dlc')
-
-
-    # type_traçabilite=fields.Selection(string='type de traçabilite', selection=[('dlc', 'DLC'), ('ddm', 'DDM'), ('dluo', 'DLUO')], readonly=True, required=True)
     ingredient=fields.Text(string='Description ingrédient')
-    douane=fields.Char(string='Nomenclature Douane')
-    no_agrement_sanitaire=fields.Char(string='N° Agrément Sanitaire')
-    kcal=fields.Float(string='Kcl')
-    kjoules=fields.Float(string='Kjoules')
-    glucides=fields.Float(string='Glucides')
-    glucides_dt_sucre=fields.Float(string='Glucides dt sucre')
-    mat_grasse_extrait_sec=fields.Float(string='M.G. / extrait sec')
-    mat_grasse_poids_total=fields.Float(string='M.G. / poids total')
-
-    sodium = fields.Float('Sodium')
-    calcium = fields.Float('Calcium')
-    cholesterol = fields.Float('Cholestérol')
-    lipides = fields.Float('Lipides')
-    extraitsec = fields.Float('Extrait Sec')
-    proteines = fields.Float('Protéines')
-
-    eau = fields.Float('EAU')
-    humidite_degraisse = fields.Float('Humidité/dégraissé(%)')
-    dt_sature = fields.Float('DT Saturés')
-    sel = fields.Float('Sel')
-    phosphore = fields.Float('Phosphore')
-    potassium = fields.Float('Potassium')
-    magnesium = fields.Float('Magnesium')
-    fer = fields.Float('Fer')
 
 
+    #kcal=fields.Float(string='Kcl')
+    #kjoules=fields.Float(string='Kjoules')
+    #glucides=fields.Float(string='Glucides')
+    #glucides_dt_sucre=fields.Float(string='Glucides dt sucre')
+    #mat_grasse_extrait_sec=fields.Float(string='M.G. / extrait sec')
+    #mat_grasse_poids_total=fields.Float(string='M.G. / poids total')
 
+    #sodium = fields.Float('Sodium')
+    #calcium = fields.Float('Calcium')
+    #cholesterol = fields.Float('Cholestérol')
+    #lipides = fields.Float('Lipides')
+    #extraitsec = fields.Float('Extrait Sec')
+    #proteines = fields.Float('Protéines')
+    #eau = fields.Float('EAU')
+    #humidite_degraisse = fields.Float('Humidité/dégraissé(%)')
+    #dt_sature = fields.Float('DT Saturés')
+    #sel = fields.Float('Sel')
+    #phosphore = fields.Float('Phosphore')
+    #potassium = fields.Float('Potassium')
+    #magnesium = fields.Float('Magnesium')
+    #fer = fields.Float('Fer')
 
-    mode_vente = fields.Selection(selection=[('colis', 'Colis'),('piece', 'Pièce'),('decoupe', 'Découpe')], string="Mode Vente")
+    #mois_fromage_ids=fields.Many2many('mois.fromage','product_mois_fromage_rel','product_id','mois_fromage_id', string='Meilleures périodes')
+    #emballage=fields.Text(string='Emballage du Produit')
+    #country_id = fields.Many2one('res.country', string='Pays Origine',help='Pays Origine du Fromage')
 
-    mois_fromage_ids=fields.Many2many('mois.fromage','product_mois_fromage_rel','product_id','mois_fromage_id', string='Meilleures périodes')
+    product_label_ids = fields.Many2many('product.label','product_label_rel','product_id','label_id', string='Labels')
+    mode_vente        = fields.Selection(selection=[('colis', 'Colis'),('piece', 'Pièce'),('decoupe', 'Découpe')], string="Mode Vente")
+    douane            = fields.Char(string='Nomenclature Douane')
 
 
     default_code = fields.Char(
@@ -199,9 +219,6 @@ class SupplierInfo(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    # _sql_constraints = [
-    #     ('default_code_uniq', 'unique (default_code)', 'La reference interne de larticle doit etre unique !')
-    # ]
 
     @api.onchange('default_code')
     @api.multi
@@ -344,9 +361,6 @@ class UoM(models.Model):
         self.ensure_one()
         if self.category_id.id != to_unit.category_id.id:
             if raise_if_failure:
-                # raise UserError(_(
-                #     'The unit of measure %s defined on the order line doesn\'t belong to the same category than the unit of measure %s defined on the product. Please correct the unit of measure defined on the order line or on the product, they should belong to the same category.') % (
-                #                 self.name, to_unit.name))
                 print('Error UOM')
             else:
                 return qty

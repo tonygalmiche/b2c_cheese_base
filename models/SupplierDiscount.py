@@ -7,7 +7,7 @@ from odoo.addons import decimal_precision as dp
 
 class SupplierDiscount(models.Model):
     _name = "product.supplierdiscount"
-
+    _description = "SupplierDiscount"
 
     name = fields.Float('Discount')
     supplier_info_id = fields.Many2one('product.supplierinfo')
@@ -20,7 +20,6 @@ class SupplierDiscount(models.Model):
 
 class SupplierInfo(models.Model):
     _inherit = "product.supplierinfo"
-
 
     date_start = fields.Date('Start Date', help="Start date for this vendor price", required=True)
     date_end = fields.Date('End Date', help="End date for this vendor price", required=True)
