@@ -313,16 +313,21 @@ class StockMove(models.Model):
                 lot_name=[]
                 for ddm in ddms:
                     if ddms[ddm]["lot"]:
-                        lot = 'Lot N° ' + ddms[ddm]["lot"]
+                        lot = 'Lot: ' + ddms[ddm]["lot"]
                         lot += ' ' + ddms[ddm]["type_tracabilite"].upper()
-                        lot += ' : ' + ddms[ddm]["life_use_date"]
-                        lot += ' Qte : ' + str(ddms[ddm]["qty_done"])+ ' ' + move.product_uom.name
+                        lot += ': ' + ddms[ddm]["life_use_date"]
+                        lot += ' Quant: ' + str(ddms[ddm]["weight"])
+                        lot += ' Colis: ' + str(ddms[ddm]["qty_done"])
                         lot_name.append(lot)
                 lot_name="\n".join(lot_name)
                 move.lot_name = lot_name
 
+                print(lot_name)
+
+
                 #if ch:
                 #    move.lot_name = ch
+
 
 
     note = fields.Text('Notes')

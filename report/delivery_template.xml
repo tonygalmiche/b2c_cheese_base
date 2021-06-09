@@ -211,21 +211,23 @@
                                     </t>
                                     -->
 
-                                    <t t-foreach="ddms" t-as="ddm">
-                                        <t t-if="ddms[ddm]['weight']">
-                                            <strong>Lot:</strong>
-                                            <span t-esc="ddms[ddm]['lot']" style="margin:0 !important;"/>
-                                            <t t-if="ddms[ddm]['life_use_date']">
-                                                <strong t-esc="ddms[ddm]['type_tracabilite'].upper()"/>:
-                                                <span t-esc="ddms[ddm]['life_use_date']" style="margin:0 !important;"/>
+                                    <div>
+                                        <t t-foreach="ddms" t-as="ddm">
+                                            <t t-if="ddms[ddm]['weight']">
+                                                <strong>Lot:</strong>
+                                                <span t-esc="ddms[ddm]['lot']" style="margin:0 !important;"/>
+                                                <t t-if="ddms[ddm]['life_use_date']">
+                                                    <strong t-esc="ddms[ddm]['type_tracabilite'].upper()"/>:
+                                                    <span t-esc="ddms[ddm]['life_use_date']" style="margin:0 !important;"/>
+                                                </t>
+                                                <strong>Quant:</strong>
+                                                <span t-esc="ddms[ddm]['weight']" style="margin:0 !important;"/>
+                                                <strong>Colis:</strong>
+                                                <span t-esc="ddms[ddm]['qty_done']" style="margin:0 !important;"/>
+                                                <br/>
                                             </t>
-                                            <strong>Quant:</strong>
-                                            <span t-esc="ddms[ddm]['weight']" style="margin:0 !important;"/>
-                                            <strong>Colis:</strong>
-                                            <span t-esc="ddms[ddm]['qty_done']" style="margin:0 !important;"/>
-                                            <br/>
                                         </t>
-                                    </t>
+                                    </div>
 
 
                                 </td>
