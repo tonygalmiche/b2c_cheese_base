@@ -171,8 +171,11 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <t t-set="lines" t-value="o.move_lines.filtered(lambda x: x.product_uom_qty)"/>
                             <tr t-foreach="lines" t-as="move">
+
+                                <t t-set="ddms" t-value="move.get_ddm_lot()"/>
                                 <t t-set="lots" t-value="[]"/>
                                 <t t-foreach="move.move_line_ids" t-as="ml">
                                     <t t-esc="lots.append(ml.lot_id)"/>
@@ -189,14 +192,12 @@
                                         <span t-field="move.product_id.sudo().description_pickingin"/>
                                     </span>
                                     <!-- lot name -->
-
-
+                                    <!--
                                     <t t-foreach="set(lots)" t-as="lot">
                                         <strong>Lot:</strong>
                                         <span t-field="lot.name" style="margin:0 !important;"/>
                                         <strong t-field="move.product_id.type_traçabilite"/>:
 
-                                        <!-- lot date -->
                                         <t t-if="lot.life_date">
                                             <span t-esc="context_timestamp(lot.life_date).strftime('%Y-%m-%d')" t-options="{'widget': 'date'}" style="margin:0 !important;"/>
                                         </t>
@@ -208,12 +209,32 @@
                                         </t>
                                         <br/>
                                     </t>
+                                    -->
+
+                                    <t t-foreach="ddms" t-as="ddm">
+                                        <t t-if="ddms[ddm]['weight']">
+                                            <strong>Lot:</strong>
+                                            <span t-esc="ddms[ddm]['lot']" style="margin:0 !important;"/>
+                                            <t t-if="ddms[ddm]['life_use_date']">
+                                                <strong t-esc="ddms[ddm]['type_tracabilite'].upper()"/>:
+                                                <span t-esc="ddms[ddm]['life_use_date']" style="margin:0 !important;"/>
+                                            </t>
+                                            <strong>Quant:</strong>
+                                            <span t-esc="ddms[ddm]['weight']" style="margin:0 !important;"/>
+                                            <strong>Colis:</strong>
+                                            <span t-esc="ddms[ddm]['qty_done']" style="margin:0 !important;"/>
+                                            <br/>
+                                        </t>
+                                    </t>
+
+
                                 </td>
                                 <!-- Qte -->
                                 <td class="text-right" t-if="move.is_colis">
 
                                     <strong t-field="move.weight"/>
                                     <!-- qte par lot -->
+                                    <!--
                                     <br/>
                                     <t t-foreach="set(lots)" t-as="lot">
                                         <t t-set="qty" t-value="0"/>
@@ -222,23 +243,21 @@
                                                 <t t-set="qty" t-value="qty+l.weight"/>
                                             </t>
                                         </t>
-                                        <!--<span t-esc="'%.3f'% qty"/>-->
                                         <span t-esc="qty" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 3}"/>
-
                                         <br/>
-
-
                                     </t>
+                                    -->
                                 </td>
                                 <!-- Unite -->
                                 <td class="text-left" t-if="move.is_colis">
                                     <strong t-field="move.weight_uom_id"/>
+                                    <!--
                                     <br/>
                                     <t t-foreach="set(lots)" t-as="lot">
                                         <span t-field="move.weight_uom_id"/>
                                         <br/>
                                     </t>
-
+                                    -->
                                 </td>
                                 <!-- Cdé -->
                                 <td class="text-right">
@@ -255,6 +274,7 @@
                                         <strong t-if="not o.is_colis" t-field="move.product_uom"/>
                                     </span>
                                     <!-- qte par lot -->
+                                    <!--
                                     <br/>
                                     <t t-foreach="set(lots)" t-as="lot">
                                         <t t-set="qty" t-value="0"/>
@@ -263,15 +283,12 @@
                                                 <t t-set="qty" t-value="qty+l.qty_done"/>
                                             </t>
                                         </t>
-                                        <!--<span t-esc="'%.3f'% qty"/>-->
                                         <span t-if="o.is_colis" t-esc="qty" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 0}"/>
-
                                         <span t-if="not o.is_colis" t-esc="qty" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 3}"/>
                                         <span t-if="not o.is_colis" t-field="move.product_uom"/>
                                         <br/>
-
-
                                     </t>
+                                    -->
                                 </td>
 
 

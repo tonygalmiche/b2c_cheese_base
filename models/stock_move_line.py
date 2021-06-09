@@ -236,6 +236,26 @@ class StockMoveLine(models.Model):
 class StockMove(models.Model):
     _inherit = "stock.move"
 
+
+
+    @api.multi
+    def get_ddm_lot(self):
+        for move in self:
+            ddms={}
+            for line in move.move_line_ids:
+                key = str(move.id)+"-"+str(line.lot_id.id or '')+"-"+((line.life_use_date and str(line.life_use_date)[:10]) or '')
+                if key not in ddms:
+                    ddms[key]={}
+                    ddms[key]["lot"]=line.lot_id.name
+                    ddms[key]["type_tracabilite"]=move.product_id.type_traçabilite
+                    ddms[key]["life_use_date"]=line.life_use_date and line.life_use_date.strftime('%d/%m/%Y') or ''
+                    ddms[key]["weight"]=0
+                    ddms[key]["qty_done"]=0
+                ddms[key]["weight"]+=line.weight
+                ddms[key]["qty_done"]+=line.qty_done
+            return ddms
+
+
     @api.multi
     def move_lot(self):
         for move in self:
@@ -264,24 +284,45 @@ class StockMove(models.Model):
                     }
 
                 format_date = pycompat.to_native(lang_params.get("date_format") or '%d/%m/%Y')
-                for lot in move.lot_ids:
-                    ch += 'Lot N° ' + lot.name
-                    if lot.use_date:
-                        ch += ' ' + 'DDM : ' + str(lot.use_date.date().strftime(format_date))
-                    elif lot.life_date:
-                        ch += ' ' + 'DLC : ' + str(lot.life_date.date().strftime(format_date))
-
-                    lot_qty = 0
-                    for line in move.move_line_ids:
-                        if line.lot_id == lot:
-                            lot_qty += line.qty_done
-                    ch += ' ' + 'Qte :' + ' ' + str(lot_qty) + ' ' + move.product_uom.name
-                    ch += '\n'
-
+                # for lot in move.lot_ids:
+                #     ch += 'Lot N° ' + lot.name
+                #     if lot.use_date:
+                #         ch += ' ' + 'DDM : ' + str(lot.use_date.date().strftime(format_date))
+                #     elif lot.life_date:
+                #         ch += ' ' + 'DLC : ' + str(lot.life_date.date().strftime(format_date))
+                #     lot_qty = 0
+                #     for line in move.move_line_ids:
+                #         if line.lot_id == lot:
+                #             lot_qty += line.qty_done
+                #     ch += ' ' + 'Qte :' + ' ' + str(lot_qty) + ' ' + move.product_uom.name
+                #     ch += '\n'
 
 
-                if ch:
-                    move.lot_name = ch
+                ddms={}
+                for line in move.move_line_ids:
+                    key = str(move.id)+"-"+str(line.lot_id.id or '')+"-"+((line.life_use_date and str(line.life_use_date)[:10]) or '')
+                    if key not in ddms:
+                        ddms[key]={}
+                        ddms[key]["lot"]=line.lot_id.name
+                        ddms[key]["type_tracabilite"]=move.product_id.type_traçabilite
+                        ddms[key]["life_use_date"]=line.life_use_date and line.life_use_date.strftime(format_date) or ''
+                        ddms[key]["weight"]=0
+                        ddms[key]["qty_done"]=0
+                    ddms[key]["weight"]+=line.weight
+                    ddms[key]["qty_done"]+=line.qty_done
+                lot_name=[]
+                for ddm in ddms:
+                    if ddms[ddm]["lot"]:
+                        lot = 'Lot N° ' + ddms[ddm]["lot"]
+                        lot += ' ' + ddms[ddm]["type_tracabilite"].upper()
+                        lot += ' : ' + ddms[ddm]["life_use_date"]
+                        lot += ' Qte : ' + str(ddms[ddm]["qty_done"])+ ' ' + move.product_uom.name
+                        lot_name.append(lot)
+                lot_name="\n".join(lot_name)
+                move.lot_name = lot_name
+
+                #if ch:
+                #    move.lot_name = ch
 
 
     note = fields.Text('Notes')
