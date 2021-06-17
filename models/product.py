@@ -60,6 +60,67 @@ class IsFamilleFromage(models.Model):
     name = fields.Char("Région d'origine")
 
 
+class IsIngredient(models.Model):
+    _name = "is.ingredient"
+    _description = "Ingrédients"
+    _order = "name"
+    name = fields.Char("Ingrédient", required=True)
+    active = fields.Boolean("Actif", default=True)
+
+
+class IsIngredientLine(models.Model):
+    _name = "is.ingredient.line"
+    _description = "Ingrédients des articles"
+    _order = "ordre"
+
+    product_id     = fields.Many2one('product.template', "Article", required=True, ondelete='cascade', readonly=True)
+    ingredient_id  = fields.Many2one('is.ingredient', 'Ingrédient', required=True)
+    allergene      = fields.Boolean('Allergène')
+    ordre          = fields.Integer('Ordre')
+
+
+class IsGerme(models.Model):
+    _name = "is.germe"
+    _description = "Germe"
+    _order = "ordre"
+
+    name   = fields.Char("Germe", required=True)
+    active = fields.Boolean("Actif", default=True)
+    ordre  = fields.Integer('Ordre')
+
+
+class IsGermeLine(models.Model):
+    _name = "is.germe.line"
+    _description = "Germes des articles"
+    _order = "ordre"
+
+    product_id     = fields.Many2one('product.template', "Article", required=True, ondelete='cascade', readonly=True)
+    germe_id       = fields.Many2one('is.germe', 'Germe', required=True)
+    critere         = fields.Char('Critère REG EU 2073')
+    ordre          = fields.Integer('Ordre')
+
+
+class IsValeurNutritionnelle(models.Model):
+    _name = "is.valeur.nutritionnelle"
+    _description = "Valeur Nutritionnelle"
+    _order = "ordre"
+
+    name   = fields.Char("Valeur Nutritionnelle", required=True)
+    active = fields.Boolean("Active", default=True)
+    ordre  = fields.Integer('Ordre')
+
+
+class IsValeurNutritionnelleLine(models.Model):
+    _name = "is.valeur.nutritionnelle.line"
+    _description = "Valeur Nutritionnelle des articles"
+    _order = "ordre"
+
+    product_id     = fields.Many2one('product.template', "Article", required=True, ondelete='cascade', readonly=True)
+    valeur_id      = fields.Many2one('is.valeur.nutritionnelle', 'Valeur Nutritionnelle ', required=True)
+    valeur         = fields.Char('Valeur')
+    ordre          = fields.Integer('Ordre')
+
+
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
@@ -75,8 +136,29 @@ class ProductTemplate(models.Model):
             if len(list)>=1:
                     raise UserError(_('La reference interne de doit etre unique !'))
 
-    contrat_date_id = fields.One2many('contrat.date.client','product_id','Contrat Date')
 
+    @api.depends('milk_type_ids')
+    def _compute_milk_type(self):
+        for obj in self:
+            res=[]
+            for line in obj.milk_type_ids:
+                res.append(line.name)
+            obj.milk_type = ', '.join(res)
+
+
+    @api.depends('is_ingredient_ids')
+    def _compute_is_ingredient(self):
+        for obj in self:
+            res=[]
+            for line in obj.is_ingredient_ids:
+                x=line.ingredient_id.name
+                if line.allergene:
+                    x="<b>"+x+"</b>"
+                res.append(x)
+            obj.is_ingredient = ', '.join(res)
+
+
+    contrat_date_id = fields.One2many('contrat.date.client','product_id','Contrat Date')
 
     # Présentation / Conseils
     is_creation_le   = fields.Date(string='Création le', default=lambda *a: fields.Date.today())
@@ -89,6 +171,7 @@ class ProductTemplate(models.Model):
     # CARACTÉRISTIQUES GÉNÉRALES DU PRODUIT:
     is_region_id          = fields.Many2one('is.region.origine', string="Region d'origine")
     milk_type_ids         = fields.Many2many('milk.type','product_milk_type_rel','product_id','milk_type_id', string='Type de Lait')
+    milk_type             = fields.Char(string='Types de Lait', compute='_compute_milk_type')
     traitement_thermique  = fields.Selection(string='Traitement Thermique', selection=[('laitcru', 'Lait Cru'), ('laitthermise', 'Lait Thermise'), ('laitpasteurisé', 'Lait Pasteurise')])
     is_famille_fromage_id = fields.Many2one('is.famille.fromage', string="Famille de fromage")
     duree_affinage        = fields.Char(string="Durée d'affinage")
@@ -110,9 +193,15 @@ class ProductTemplate(models.Model):
     degustation = fields.Char(string='Goût / Dégustation')
     odeur       = fields.Char(string='Odeur')
 
-    ingredient=fields.Text(string='Description ingrédient')
+    is_ingredient_ids = fields.One2many('is.ingredient.line', 'product_id', "Lignes", copy=True)
+    is_ingredient     = fields.Char(string='Ingrédients', compute='_compute_is_ingredient')
+
+    is_germe_ids                 = fields.One2many('is.germe.line'                , 'product_id', "Lignes", copy=True)
+    is_valeur_nutritionnelle_ids = fields.One2many('is.valeur.nutritionnelle.line', 'product_id', "Lignes", copy=True)
 
 
+
+    #ingredient=fields.Text(string='Description ingrédient')
     #kcal=fields.Float(string='Kcl')
     #kjoules=fields.Float(string='Kjoules')
     #glucides=fields.Float(string='Glucides')
@@ -147,6 +236,33 @@ class ProductTemplate(models.Model):
     default_code = fields.Char(
         'Internal Reference', compute='_compute_default_code',
         inverse='_set_default_code', store=True, required=False)
+
+
+    @api.multi
+    def recharger_germes_action(self):
+        for obj in self:
+            res = []
+            self.is_germe_ids = False
+            lines = self.env['is.germe'].search([('active', '=', True)])
+            for line in lines:
+                res.append((0, 0, {
+                    'germe_id': line.id,
+                }))
+            self.is_germe_ids = res
+
+
+    @api.multi
+    def recharger_valeurs_action(self):
+        for obj in self:
+            res = []
+            self.is_valeur_nutritionnelle_ids = False
+            lines = self.env['is.valeur.nutritionnelle'].search([('active', '=', True)])
+            for line in lines:
+                res.append((0, 0, {
+                    'valeur_id': line.id,
+                }))
+            self.is_valeur_nutritionnelle_ids = res
+
 
     @api.multi
     def _get_makebuy_route(self):

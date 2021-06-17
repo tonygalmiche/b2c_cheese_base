@@ -182,17 +182,35 @@
                             <field name="odeur"/>
                         </group>
                     </group>
-
-                    <group string="Ingredients">
-                        <field name="ingredient" nolabel="1"/>
+                    <group string="Ingrédients">
+                        <field name="is_ingredient_ids" nolabel="1" >
+                            <tree editable="bottom">
+                                <field name="ordre" widget="handle"/>
+                                <field name="ingredient_id"/>
+                                <field name="allergene"/>
+                            </tree>
+                        </field>
                     </group>
+                    <group string="Germes"/>
+                    <field name="is_germe_ids" nolabel="1" >
+                        <tree editable="bottom">
+                            <field name="ordre" widget="handle"/>
+                            <field name="germe_id"/>
+                            <field name="critere"/>
+                        </tree>
+                    </field>
+                    <button string="Recharger les germes" name="recharger_germes_action" type="object" confirm="Cela va remplacer les données ci-dessus"/>
 
 
-
-                    <group string="Informations Nutritionnelles pour 100g">
-                    </group>
-
-
+                    <group string="Valeurs Nutritionnelles Moyennes pour 100g"/>
+                    <field name="is_valeur_nutritionnelle_ids" nolabel="1" >
+                        <tree editable="bottom">
+                            <field name="ordre" widget="handle"/>
+                            <field name="valeur_id"/>
+                            <field name="valeur"/>
+                        </tree>
+                    </field>
+                    <button string="Recharger les valeurs" name="recharger_valeurs_action" type="object" confirm="Cela va remplacer les données ci-dessus"/>
                 </page>
             </xpath>
 
@@ -237,5 +255,157 @@
     </record>
     <menuitem id="menu_mois_fromage" name="Mois du fromage" parent="stock.menu_product_in_config_stock" sequence="5"
               action="mois_fromage_act"/>
+
+
+    <!-- is.ingredient -->
+    <record id="is_ingredient_tree_view" model="ir.ui.view">
+        <field name="name">is_ingredient_tree_view</field>
+        <field name="model">is.ingredient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="is_ingredient_form_view" model="ir.ui.view">
+        <field name="name">is_ingredient_form_view</field>
+        <field name="model">is.ingredient</field>
+        <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name="name"/>
+                    <field name="active"/>
+                </group>
+            </sheet>
+        </form>
+        </field>
+    </record>
+    <record id="is_ingredient_search_view" model="ir.ui.view">
+        <field name="name">is_ingredient_search_view</field>
+        <field name="model">is.ingredient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="is_ingredient_action" model="ir.actions.act_window" >
+        <field name="name">Ingrédients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">is.ingredient</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem 
+        id="is_ingredient_menu" 
+        name="Ingrédients" 
+        parent="sale.prod_config_main" 
+        sequence="900"
+        action="is_ingredient_action"
+    />
+
+
+
+    <!-- is.germe -->
+    <record id="is_germe_tree_view" model="ir.ui.view">
+        <field name="name">is_germe_tree_view</field>
+        <field name="model">is.germe</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="ordre" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="is_germe_form_view" model="ir.ui.view">
+        <field name="name">is_germe_form_view</field>
+        <field name="model">is.germe</field>
+        <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name="name"/>
+                    <field name="active"/>
+                </group>
+            </sheet>
+        </form>
+        </field>
+    </record>
+    <record id="is_germe_search_view" model="ir.ui.view">
+        <field name="name">is_germe_search_view</field>
+        <field name="model">is.germe</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="is_germe_action" model="ir.actions.act_window" >
+        <field name="name">Germes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">is.germe</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem 
+        id="is_germe_menu" 
+        name="Germes" 
+        parent="sale.prod_config_main" 
+        sequence="910"
+        action="is_germe_action"
+    />
+
+
+
+    <!-- is.valeur.nutritionnelle -->
+    <record id="is_valeur_nutritionnelle_tree_view" model="ir.ui.view">
+        <field name="name">is_valeur_nutritionnelle_tree_view</field>
+        <field name="model">is.valeur.nutritionnelle</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="ordre" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="is_valeur_nutritionnelle_form_view" model="ir.ui.view">
+        <field name="name">is_valeur_nutritionnelle_form_view</field>
+        <field name="model">is.valeur.nutritionnelle</field>
+        <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name="name"/>
+                    <field name="active"/>
+                </group>
+            </sheet>
+        </form>
+        </field>
+    </record>
+    <record id="is_valeur_nutritionnelle_search_view" model="ir.ui.view">
+        <field name="name">is_valeur_nutritionnelle_search_view</field>
+        <field name="model">is.valeur.nutritionnelle</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="is_valeur_nutritionnelle_action" model="ir.actions.act_window" >
+        <field name="name">Valeur Nutritionnelle</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">is.valeur.nutritionnelle</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem 
+        id="is_valeur_nutritionnelle_menu" 
+        name="Valeur Nutritionnelle" 
+        parent="sale.prod_config_main" 
+        sequence="920"
+        action="is_valeur_nutritionnelle_action"
+    />
+
+
+
+
 
 </odoo>

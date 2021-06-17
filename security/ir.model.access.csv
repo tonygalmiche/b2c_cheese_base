@@ -8,9 +8,23 @@ access_contrat_date_client_all,contrat.date.client.all,b2c_cheese_base.model_con
 access_product_label_category,access_product_label_category,model_product_label_category,base.group_user,1,0,0,0
 access_product_label_category_manager,access_product_label_category_manager,model_product_label_category,sales_team.group_sale_manager,1,1,1,1
 
-
 access_is_famille_fromage,access_is_famille_fromage,model_is_famille_fromage,base.group_user,1,0,0,0
 access_is_famille_fromage_manager,access_is_famille_fromage_manager,model_is_famille_fromage,sales_team.group_sale_manager,1,1,1,1
 
 access_is_region_origine,access_is_region_origine,model_is_region_origine,base.group_user,1,0,0,0
 access_is_region_origine_manager,access_is_region_origine_manager,model_is_region_origine,sales_team.group_sale_manager,1,1,1,1
+
+access_is_ingredient,access_is_ingredient,model_is_ingredient,base.group_user,1,0,0,0
+access_is_ingredient_manager,access_is_ingredient_manager,model_is_ingredient,sales_team.group_sale_manager,1,1,1,1
+
+access_is_ingredient_line,access_is_ingredient_line,model_is_ingredient_line,base.group_user,1,1,1,1
+
+access_is_germe,access_is_germe,model_is_germe,base.group_user,1,0,0,0
+access_is_germe_manager,access_is_germe_manager,model_is_germe,sales_team.group_sale_manager,1,1,1,1
+
+access_is_germe_line,access_is_germe_line,model_is_germe_line,base.group_user,1,1,1,1
+
+access_is_valeur_nutritionnelle,access_is_valeur_nutritionnelle,model_is_valeur_nutritionnelle,base.group_user,1,0,0,0
+access_is_valeur_nutritionnelle_manager,access_is_valeur_nutritionnelle_manager,model_is_valeur_nutritionnelle,sales_team.group_sale_manager,1,1,1,1
+
+access_is_valeur_nutritionnelle_line,access_is_valeur_nutritionnelle_line,model_is_valeur_nutritionnelle_line,base.group_user,1,1,1,1
