@@ -244,9 +244,12 @@ class ProductTemplate(models.Model):
             res = []
             self.is_germe_ids = False
             lines = self.env['is.germe'].search([('active', '=', True)])
+            ordre=0
             for line in lines:
+                ordre+=10
                 res.append((0, 0, {
                     'germe_id': line.id,
+                    'ordre': ordre,
                 }))
             self.is_germe_ids = res
 
@@ -257,9 +260,12 @@ class ProductTemplate(models.Model):
             res = []
             self.is_valeur_nutritionnelle_ids = False
             lines = self.env['is.valeur.nutritionnelle'].search([('active', '=', True)])
+            ordre=0
             for line in lines:
+                ordre+=10
                 res.append((0, 0, {
                     'valeur_id': line.id,
+                    'ordre': ordre,
                 }))
             self.is_valeur_nutritionnelle_ids = res
 

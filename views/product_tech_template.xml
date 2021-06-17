@@ -15,7 +15,8 @@
                             font-size:11pt;
                         }
                         .table th, .table td {
-                            padding: 0.2em 0.4em;
+                            padding: 0.1em;
+                            padding-left: 0.3em;
                             vertical-align: top;
                             border: 1px solid;
                         }
@@ -28,8 +29,8 @@
                             background-color:black;
                             color:#FA0000;
                             padding:4pt;
-                            margin-top:7mm;
-                            margin-bottom:2mm;
+                            margin-top:5mm;
+                            margin-bottom:3mm;
                         }
                     </style>
                     <div class="page">
@@ -39,16 +40,20 @@
                                     <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" alt="Logo" style="max-height:25mm"/>
                                 </td>
                                 <td style="width:70%;text-align:center;vertical-align:top">
-                                    <div style="font-size:24pt">LE FROMELIER</div>
+                                    <div style="font-size:24pt" t-field="doc.company_id.name"/>
                                     <div style="font-size:10pt">
-                                        5 Rue Claude Nicolas Ledoux – Z.I. – 39800 POLIGNY –<br />
+                                        <span t-field="doc.company_id.street"/>
+                                        <span t-field="doc.company_id.street2"/> - 
+                                        <span t-field="doc.company_id.zip"/> 
+                                        <span t-field="doc.company_id.city"/>
+                                        <br />
                                         MOBILE : 06 52 34 73 63 – TEL : 03 84 52 01 02 – EMAIL : lefromelier@le-fromelier.fr
                                     </div>
                                 </td>
                                 <td style="width:70%;text-align:left;vertical-align:top;border:0px solid">
                                     <div style="font-size:9pt;margin:0em;padding:0em">
-                                        Création le : <br />11/01/2021 <br />
-                                        Mise à jour le : <br />xx
+                                        Création le :    <br /><span t-field="doc.is_creation_le"/> <br />
+                                        Mise à jour le : <br /><span t-field="doc.is_mis_a_jour_le"/>
                                     </div>
                                 </td>
                             </tr>
@@ -63,23 +68,15 @@
                                         <img t-if="doc.image" t-att-src="image_data_uri(doc.image)" style="max-height:50mm"/>
                                         <br />
                                     </td>
-
                                     <td style="width:50%;vertical-align:center">
-                                        <div style="font-size:14pt;font-weight:bold">TOMME AU FOIN - 1,8Kg x 2</div>
+                                        <div style="font-size:14pt;font-weight:bold" t-field="doc.name"></div>
                                         <b>Présentation:</b><br />
-                                        C'est dans une ancienne poudrière, creusée à 65 mètres de profondeur
-                                        sous la montagne Savoyarde qu'est affinée la Tomme au Foin. C'est un
-                                        fromage artisanal à la croûte duveteuse et épaisse recouvert de foin en fin
-                                        d'affinage. Elaborée avec du lait de vache entier non pasteurisé, son goût
-                                        est marqué d’arômes de fenaison et d’odeurs de foin fraîchement coupé.<br />
+                                        <div t-field="doc.is_presentation"/>
                                         <b>Conseils:</b><br />
-                                        Peut se déguster à l'apéritif tout comme en fromage de plateau. Se marie
-                                        très bien avec un vin blanc fruité.
+                                        <div t-field="doc.is_conseils"/>
                                     </td>
                                 </tr>
                             </table>
-
-
                             <h1>CARACTÉRISTIQUES GÉNÉRALES DU PRODUIT:</h1>
                             <table style="width:100%">
                                 <tr>
@@ -133,332 +130,26 @@
                                 <tr>
                                     <td style="width:45%;vertical-align:top">
                                         <table class="table" style="width:100%">
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
+                                            <tr><th>Germes</th><th>Critère REG EU 2073</th></tr>
+                                            <t t-foreach="doc.is_germe_ids" t-as="l">
+                                                <tr><td><span t-field="l.germe_id.name"/></td><td><span t-field="l.critere"/></td></tr>
+                                            </t>
                                         </table>
                                     </td>
                                     <td style="width:10%;vertical-align:top">
                                     </td>
                                     <td style="width:45%;vertical-align:top">
                                         <table class="table" style="width:100%">
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
-                                            <tr><td>xxx:     </td><td>xxx</td></tr>
+                                            <t t-foreach="doc.is_valeur_nutritionnelle_ids" t-as="l">
+                                                <tr><td><span t-field="l.valeur_id.name"/></td><td><span t-field="l.valeur"/></td></tr>
+                                            </t>
                                         </table>
                                     </td>
                                 </tr>
                             </table>
                         </row>
-
-
-
                     </div>
-
-
-<!--
-
-                        <div class="oe_structure"/>
-
-                        <div class="main" style="border:1px solid; padding: 2%; font-family:Times New Roman;">
-                            <div class="row">
-                                <div class="col-9" style="text-align: center">
-                                    <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"
-                                         alt="Logo" style="display: block;margin: auto;width: 60%;"/>
-                                </div>
-                                <div class="col-3" style="margin-top: 20px;">
-                                    <div>
-                                        <t t-if="docs.barcode">
-                                            <img alt="Barcode" t-if="len(docs.barcode) == 13"
-                                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', docs.barcode, 600, 150)"
-                                                 style="width:100%;height:4rem;"/>
-                                            <img alt="Barcode" t-elif="len(docs.barcode) == 8"
-                                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', docs.barcode, 600, 150)"
-                                                 style="width:100%;height:4rem;"/>
-                                            <img alt="Barcode" t-else=""
-                                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', docs.barcode, 600, 150)"
-                                                 style="width:100%;height:4rem"/>
-                                            <span t-field="docs.barcode" style="text-align: center;display: block;"/>
-                                        </t>
-
-                                        <br/>
-                                        <br/>
-                                        <table class="table table2">
-                                            <tr>
-                                                <td style="border: none !important;">
-                                                    <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold; ">
-                                                        Libellé :
-                                                    </span>
-                                                </td>
-                                                <td style="border: none !important;">
-                                                    <span t-field="doc.default_code"/>
-                                                </td>
-                                            </tr>
-
-
-                                            <tr>
-                                                <td style="border: none !important;">
-                                                    <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold; ">
-                                                        No Agrément:
-                                                    </span>
-                                                </td>
-                                                <td style="border: none !important;">
-                                                    <span t-field="doc.no_agrement_sanitaire"/>
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td style="border: none !important;">
-                                                    <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold; ">
-                                                        No Douane :
-                                                    </span>
-                                                </td>
-                                                <td style="border: none !important;">
-                                                    <span t-field="doc.douane"/>
-                                                </td>
-
-                                            </tr>
-                                        </table>
-
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h2>
-                                        <strong t-field="docs.name"/>
-                                    </h2>
-
-                                    <br/>
-
-                                    <t t-foreach="doc.product_label_ids" t-as="l">
-                                        <h6 t-field="l.libelle" style="padding-left: 18px; ">
-
-                                        </h6>
-                                    </t>
-                                </div>
-                                <div class="row">
-                                    <t t-foreach="doc.product_label_ids" t-as="label">
-                                        <div class="col-1">
-                                            <img t-if="label.logo_label" t-att-src="image_data_uri(label.logo_label)"
-                                                 class="float-left" style="width: 70px;height: 70px;padding: 5px;"/>
-                                        </div>
-                                    </t>
-                                    <div style="width: 70px;"/>
-                                    <t t-foreach="doc.milk_type_ids" t-as="milk">
-                                        <div class="col-1" style="display:block;margin: 0 0 0 auto;">
-                                            <img t-if="milk.logo" t-att-src="image_data_uri(milk.logo)"
-                                                 class="float-left" style="width: 70px;height: 70px;padding: 5px;"/>
-                                        </div>
-                                    </t>
-                                </div>
-                                <br/>
-                                <br/>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <img t-if="doc.image" t-att-src="image_data_uri(doc.image)"
-                                             class="float-left" style="width:100%;"/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-
-                                        <strong style="font-weight: bold; left:0;font-family:Times New Roman;padding: 10px;">
-                                            Valeurs nutritionnelles / par 100g :
-                                        </strong>
-                                        <br/>
-                                        <br/>
-
-
-
-                                    </div>
-                                    <div class="col-7">
-                                        <div class="row">
-                                            <div class="col-12">
-
-                                                <table class="table table2" style=" width: 100%;">
-
-                                                    <tr>
-                                                        <td>
-                                                            <strong>
-                                                                <t t-if="doc.use_time">
-                                                                    DLUO:
-                                                                </t>
-                                                                <t t-if="doc.life_time">
-                                                                    DDM:
-                                                                </t>
-
-                                                            </strong>
-                                                        </td>
-                                                        <td style="background-color:#eee">
-                                                            <t t-if="doc.use_time">
-                                                                <span t-field="doc.use_time"/>
-                                                            </t>
-                                                            <t t-if="doc.life_time">
-                                                                <span t-field="doc.life_time"/>
-                                                            </t>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <strong>Affinage:</strong>
-                                                        </td>
-                                                        <td style="background-color:#eee">
-                                                            <span t-field="doc.duree_affinage"/>
-                                                        </td>
-                                                        <td>
-                                                            <strong>Unité de vente( €/pièce ):</strong>
-                                                        </td>
-                                                        <td style="background-color:#eee">
-                                                            <span t-field="doc.weight_uom_id.name"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <strong>Poids Net:</strong>
-                                                        </td>
-                                                        <td style="background-color:#eee">
-                                                            <span t-field="doc.weight"/>
-                                                        </td>
-                                                        <td>
-                                                            <strong>T° de stockage:</strong>
-                                                        </td>
-                                                        <td style="background-color:#eee">
-                                                            <span t-field="doc.temperature_stock"/>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-
-                                                <br/>
-                                                <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold;  ">
-                                                    Odeur:
-                                                </span>
-                                                <p t-field="doc.odeur"/>
-
-                                                <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold;  ">
-                                                    Texture:
-                                                </span>
-                                                <p t-field="doc.texture"/>
-                                                <span style="font-family:Times New Roman;  font-size: 16px; font-weight: bold;  ">
-                                                    Dégustation:
-                                                </span>
-                                                <p t-field="doc.degustation"/>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <table class="table table2" style=" width: 100%;">
-                                            <tr>
-                                                <td style="width:25%;">
-                                                    <strong>Energie:</strong>
-                                                </td>
-                                                <td style="background-color:#eee ;width:25%;" >
-                                                    <span t-field="doc.kcal"/>
-                                                    <span>Kcal</span>
-                                                    <span>/</span>
-                                                    <span t-field="doc.kjoules"/>
-                                                    <span>kJ</span>
-                                                </td>
-                                                <td style="width:25%;"><strong>Sodium:</strong></td>
-                                                <td  style="background-color:#eee;width:50%;"><span t-field="doc.sodium"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <strong>M.G. / ES</strong>
-                                                </td>
-                                                <td style="background-color:#eee">
-                                                    <span t-field="doc.mat_grasse_extrait_sec"/>
-                                                    <span>g</span>
-                                                </td>
-                                                 <td><strong>Calcium</strong></td>
-                                                <td style="background-color:#eee"><span t-field="doc.calcium"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <strong>M.G. / PT</strong>
-                                                </td>
-                                                <td style="background-color:#eee">
-                                                    <span t-field="doc.mat_grasse_poids_total"/>
-                                                    <span>g</span>
-                                                </td>
-                                                 <td><strong>Lipides:</strong></td>
-                                                <td style="background-color:#eee"><span t-field="doc.lipides"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <strong>Glucides</strong>
-                                                </td>
-                                                <td style="background-color:#eee">
-                                                    <span t-field="doc.glucides"/>
-                                                </td>
-                                                 <td><strong>Cholesterole:</strong></td>
-                                                <td style="background-color:#eee"><span t-field="doc.cholesterol"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <strong>Glucides dt sucre</strong>
-                                                </td>
-                                                <td style="background-color:#eee">
-                                                    <span t-field="doc.glucides_dt_sucre"/>
-                                                </td>
-                                                 <td><strong>Extrait Sec:</strong></td>
-                                                <td style="background-color:#eee"><span t-field="doc.extraitsec"/></td>
-                                            </tr>
-                                            <tr>
-                                                 <td></td>
-                                                <td style="background-color:#eee"></td>
-                                                 <td><strong>Proteines:</strong></td>
-                                                <td style="background-color:#eee"><span t-field="doc.proteines"/></td>
-                                            </tr>
-                                        </table>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-5" style=" padding: 60px;  border:1px solid #ccc;position:relative; ">
-
-                                    <strong style="font-weight: bold; position:absolute;top:0px;left:0;font-family:Times New Roman;padding: 10px;">
-                                        Emballage :
-                                    </strong>
-                                    <br/>
-                                    <br/>
-
-                                    <p t-field="doc.emballage"/>
-
-
-                                </div>
-
-                                <div class="col-7">
-                                    <div style="border:1px solid #ccc; padding:60px; position:relative;">
-                                        <p>
-                                            <strong style="font-weight: bold; position:absolute;top:0px;left:0;font-family:Times New Roman;padding: 10px;">
-                                                Ingrédients:
-                                            </strong>
-
-
-                                        </p>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
--->
-
-
     </div>
-
             </t>
         </t>
     </template>
