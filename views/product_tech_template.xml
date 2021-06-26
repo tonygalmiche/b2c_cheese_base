@@ -12,12 +12,13 @@
                     <t t-raw="0"/>
                     <style>
                         .page{
-                            font-size:11pt;
+                            font-size:10.5pt;
                         }
                         .table th, .table td {
                             padding: 0.1em;
                             padding-left: 0.3em;
-                            vertical-align: top;
+                            padding-right: 0.3em;
+                            vertical-align: middle;
                             border: 1px solid;
                         }
                         .table table {
@@ -29,17 +30,17 @@
                             background-color:black;
                             color:#FA0000;
                             padding:4pt;
-                            margin-top:5mm;
-                            margin-bottom:3mm;
+                            margin-top:4mm;
+                            margin-bottom:2mm;
                         }
                     </style>
                     <div class="page">
                         <table style="width:100%">
                             <tr>
-                                <td style="width:15%;text-align:left;vertical-align:top">
+                                <td style="width:25mm;text-align:left;vertical-align:top;border:1px solid">
                                     <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" alt="Logo" style="max-height:25mm"/>
                                 </td>
-                                <td style="width:70%;text-align:center;vertical-align:top">
+                                <td style="width:150mm;text-align:center;vertical-align:top">
                                     <div style="font-size:24pt" t-field="doc.company_id.name"/>
                                     <div style="font-size:10pt">
                                         <span t-field="doc.company_id.street"/>
@@ -50,26 +51,25 @@
                                         MOBILE : 06 52 34 73 63 – TEL : 03 84 52 01 02 – EMAIL : lefromelier@le-fromelier.fr
                                     </div>
                                 </td>
-                                <td style="width:70%;text-align:left;vertical-align:top;border:0px solid">
-                                    <div style="font-size:9pt;margin:0em;padding:0em">
-                                        Création le :    <br /><span t-field="doc.is_creation_le"/> <br />
-                                        Mise à jour le : <br /><span t-field="doc.is_mis_a_jour_le"/>
+                                <td style="text-align:left;vertical-align:middle;border:1px solid">
+                                    <div style="font-size:9pt;margin:0em;padding:2mm">
+                                        Création le :    <span t-field="doc.is_creation_le"/> <br />
+                                        Mise à jour le : <span t-field="doc.is_mis_a_jour_le"/>
                                     </div>
                                 </td>
                             </tr>
                         </table>
-                        <br />
                         <row>
-                            <h1>DÉSIGNATION:</h1>
+                            <h1>DÉSIGNATION: <span style="font-size:14pt;font-weight:bold" t-field="doc.name"/></h1>
                             <table style="width:100%">
                                 <tr>
-                                    <td style="width:50%;vertical-align:center">
+                                    <td style="vertical-align:middle">
                                         <br />
-                                        <img t-if="doc.image" t-att-src="image_data_uri(doc.image)" style="max-height:50mm"/>
+                                        <img t-if="doc.image" t-att-src="image_data_uri(doc.image)" style="max-height:70mm;max-width:70mm"/>
                                         <br />
                                     </td>
-                                    <td style="width:50%;vertical-align:center">
-                                        <div style="font-size:14pt;font-weight:bold" t-field="doc.name"></div>
+                                    <td style="vertical-align:middle">
+                                        
                                         <b>Présentation:</b><br />
                                         <div t-field="doc.is_presentation"/>
                                         <b>Conseils:</b><br />
@@ -80,7 +80,7 @@
                             <h1>CARACTÉRISTIQUES GÉNÉRALES DU PRODUIT:</h1>
                             <table style="width:100%">
                                 <tr>
-                                    <td style="width:45%;vertical-align:top">
+                                    <td style="width:48%;vertical-align:top">
                                         <table class="table" style="width:100%">
                                             <tr><td>Région d'origine:     </td><td><span t-field="doc.is_region_id.name"/></td></tr>
                                             <tr><td>Type de lait:     </td><td><span t-field="doc.milk_type"/></td></tr>
@@ -90,9 +90,9 @@
                                             <tr><td>Croûte comestible:    </td><td><span t-field="doc.is_croute_comestible"/></td></tr>
                                         </table>
                                     </td>
-                                    <td style="width:10%;vertical-align:top">
+                                    <td style="width:4%;vertical-align:top">
                                     </td>
-                                    <td style="width:45%;vertical-align:top">
+                                    <td style="width:48%;vertical-align:top">
                                          <table class="table" style="width:100%">
                                             <tr><td>DLUO:                        </td><td><span t-field="doc.is_dluo"/></td></tr>
                                             <tr><td>Type de conditionnement:     </td><td><span t-field="doc.is_type_conditionnement"/></td></tr>
@@ -106,16 +106,16 @@
                             <h1>CARACTÉRISTIQUES ORGANOLEPTIQUES:</h1>
                             <table style="width:100%">
                                 <tr>
-                                    <td style="width:45%;vertical-align:top">
+                                    <td style="width:48%;vertical-align:top">
                                         <table class="table" style="width:100%">
                                             <tr><td>Forme:   </td><td><span t-field="doc.is_forme"/></td></tr>
                                             <tr><td>Couleur: </td><td><span t-field="doc.is_couleur"/></td></tr>
                                             <tr><td>Texture: </td><td><span t-field="doc.texture"/></td></tr>
                                         </table>
                                     </td>
-                                    <td style="width:10%;vertical-align:top">
+                                    <td style="width:4%;vertical-align:top">
                                     </td>
-                                    <td style="width:45%;vertical-align:top">
+                                    <td style="width:48%;vertical-align:top">
                                         <table class="table" style="width:100%">
                                             <tr><td>Goût:  </td><td><span t-field="doc.degustation"/></td></tr>
                                             <tr><td>Odeur: </td><td><span t-field="doc.odeur"/></td></tr>
@@ -128,7 +128,7 @@
                             <h1>CRITÈRES MICROBIOLOGIQUES ET PHYSICO-CHIMIQUE:</h1>
                             <table style="width:100%">
                                 <tr>
-                                    <td style="width:45%;vertical-align:top">
+                                    <td style="width:48%;vertical-align:top">
                                         <table class="table" style="width:100%">
                                             <tr><th>Germes</th><th>Critère REG EU 2073</th></tr>
                                             <t t-foreach="doc.is_germe_ids" t-as="l">
@@ -136,9 +136,9 @@
                                             </t>
                                         </table>
                                     </td>
-                                    <td style="width:10%;vertical-align:top">
+                                    <td style="width:4%;vertical-align:top">
                                     </td>
-                                    <td style="width:45%;vertical-align:top">
+                                    <td style="width:48%;vertical-align:top">
                                         <table class="table" style="width:100%">
                                             <t t-foreach="doc.is_valeur_nutritionnelle_ids" t-as="l">
                                                 <tr><td><span t-field="l.valeur_id.name"/></td><td><span t-field="l.valeur"/></td></tr>
