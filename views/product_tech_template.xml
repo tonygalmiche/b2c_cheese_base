@@ -37,21 +37,41 @@
                     <div class="page">
                         <table style="width:100%">
                             <tr>
-                                <td style="width:25mm;text-align:left;vertical-align:top;border:1px solid">
-                                    <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" alt="Logo" style="max-height:25mm"/>
-                                </td>
-                                <td style="width:150mm;text-align:center;vertical-align:top">
+                                <t t-if="doc.company_id.name=='FROMTOME'">
+                                    <td style="width:45mm;text-align:left;vertical-align:top;border:0px solid">
+                                        <img 
+                                            t-if="doc.company_id.logo" 
+                                            t-att-src="image_data_uri(doc.company_id.logo)" alt="Logo" 
+                                            style="max-height:25mm;max-width:45mm"
+                                        />
+                                    </td>
+                                </t>
+                                <t t-if="doc.company_id.name!='FROMTOME'">
+                                    <td style="width:25mm;text-align:left;vertical-align:top;border:0px solid">
+                                        <img 
+                                            t-if="doc.company_id.logo" 
+                                            t-att-src="image_data_uri(doc.company_id.logo)" alt="Logo" 
+                                            style="max-height:25mm;max-width:25mm"
+                                        />
+                                    </td>
+                                </t>
+                                <td style="text-align:center;vertical-align:top">
                                     <div style="font-size:24pt" t-field="doc.company_id.name"/>
-                                    <div style="font-size:10pt">
+                                    <div style="font-size:9pt">
                                         <span t-field="doc.company_id.street"/>
                                         <span t-field="doc.company_id.street2"/> - 
                                         <span t-field="doc.company_id.zip"/> 
                                         <span t-field="doc.company_id.city"/>
                                         <br />
-                                        MOBILE : 06 52 34 73 63 – TEL : 03 84 52 01 02 – EMAIL : lefromelier@le-fromelier.fr
+                                        <t t-if="doc.company_id.name=='FROMTOME'">
+                                            TEL: 03 84 52 01 02 – email: info@fromtome.com
+                                        </t>
+                                        <t t-if="doc.company_id.name!='FROMTOME'">
+                                            MOBILE: 06 52 34 73 63 – TEL: 03 84 52 01 02 – email: lefromelier@le-fromelier.fr
+                                        </t>
                                     </div>
                                 </td>
-                                <td style="text-align:left;vertical-align:middle;border:1px solid">
+                                <td style="width:45mm;text-align:left;vertical-align:middle;border:1px solid">
                                     <div style="font-size:9pt;margin:0em;padding:2mm">
                                         Création le :    <span t-field="doc.is_creation_le"/> <br />
                                         Mise à jour le : <span t-field="doc.is_mis_a_jour_le"/>
@@ -60,12 +80,17 @@
                             </tr>
                         </table>
                         <row>
-                            <h1>DÉSIGNATION: <span style="font-size:14pt;font-weight:bold" t-field="doc.name"/></h1>
+                            <table style="width:100%">
+                                <tr>
+                                    <td><h1>DÉSIGNATION</h1></td>
+                                    <td style="text-align:right"><h1><span style="font-size:14pt;font-weight:bold;color:white" t-field="doc.name"/></h1></td>
+                                </tr>
+                            </table>
                             <table style="width:100%">
                                 <tr>
                                     <td style="vertical-align:middle">
                                         <br />
-                                        <img t-if="doc.image" t-att-src="image_data_uri(doc.image)" style="max-height:70mm;max-width:70mm"/>
+                                        <img t-if="doc.image" t-att-src="image_data_uri(doc.image)" style="max-height:70mm;max-width:70mm;margin-right:10mm"/>
                                         <br />
                                     </td>
                                     <td style="vertical-align:middle">
@@ -94,7 +119,7 @@
                                     </td>
                                     <td style="width:48%;vertical-align:top">
                                          <table class="table" style="width:100%">
-                                            <tr><td>DLUO:                        </td><td><span t-field="doc.is_dluo"/></td></tr>
+                                            <tr><td><span t-field="doc.type_traçabilite"/>:</td><td><span t-field="doc.is_dluo"/></td></tr>
                                             <tr><td>Type de conditionnement:     </td><td><span t-field="doc.is_type_conditionnement"/></td></tr>
                                             <tr><td>Atelier de transformation:   </td><td><span t-field="doc.is_atelier_transformation"/></td></tr>
                                             <tr><td>Numéro d'agrément fabriquant:</td><td><span t-field="doc.no_agrement_sanitaire"/></td></tr>

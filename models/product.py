@@ -178,7 +178,7 @@ class ProductTemplate(models.Model):
     is_croute_comestible  = fields.Char(string="Croûte comestible")
 
     type_traçabilite          = fields.Selection(string='Traçabilité', selection=[('ddm', 'DDM'), ('dlc', 'DLC')], default='dlc')
-    is_dluo                   = fields.Char(string='DLUO')
+    is_dluo                   = fields.Char(string='DDM/DLC')
     is_type_conditionnement   = fields.Char(string='Type de conditionnement')
     is_atelier_transformation = fields.Char(string='Atelier de transformation')
     no_agrement_sanitaire     = fields.Char(string="N° d'agrément fabriquant")
