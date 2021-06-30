@@ -30,7 +30,6 @@
         'report/sale_template.xml',
         'report/purchase_document.xml',
         'report/sale_invoice_template.xml',
-        'report/invoice_template.xml',
         'report/external_layout_boxed.xml',
         'report/offre_report_template.xml',
         'report/fiche_palette.xml',
