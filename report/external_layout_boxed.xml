@@ -25,6 +25,9 @@
                             <span t-field="company.city"/>
                             <br/>
                             <span t-field="company.country_id"/>
+                            <div t-if="company.is_gln">
+                                GLN:<span t-field="company.is_gln"/>
+                            </div>
 
                         </div>
                     </div>

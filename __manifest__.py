@@ -13,6 +13,7 @@
         'security/ir.model.access.csv',
         'views/res_config_setting_views.xml',
         'views/partner.xml',
+        'views/res_company_view.xml',
         'views/product_view.xml',
         'views/sale_view.xml',
         'views/purchase_view.xml',
@@ -25,14 +26,12 @@
         'views/stock_inventory_view.xml',
         'views/intrastat_product.xml',
         'views/stock_production_lot.xml',
-
         'report/fiche_prepa_template.xml',
         'report/sale_template.xml',
         'report/purchase_document.xml',
         'report/sale_invoice_template.xml',
         'report/invoice_template.xml',
         'report/external_layout_boxed.xml',
-        'report/delivery_template.xml',
         'report/offre_report_template.xml',
         'report/fiche_palette.xml',
 
