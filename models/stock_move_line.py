@@ -56,13 +56,19 @@ class StockMoveLine(models.Model):
     @api.depends('product_id', 'create_date', 'qty_done')
     def get_product_weight(self):
         for line in self:
-            if line.is_colis:
-                line.product_weight = line.product_id.product_weight * line.qty_done
-            else:
-                if line.weight_uom_id.name != 'KG':
-                    line.product_weight = (line.product_id.product_weight/line.product_id.weight) * line.qty_done
+            product_weight = 0
+            if line.qty_done>0:
+                if line.is_colis:
+                    if line.weight_uom_id.name != 'KG':
+                        product_weight = line.product_id.product_weight * line.qty_done
+                    else:
+                        product_weight = line.product_id.product_weight
                 else:
-                    line.product_weight = line.qty_done
+                    if line.weight_uom_id.name != 'KG':
+                        product_weight = (line.product_id.product_weight/line.product_id.weight) * line.qty_done
+                    else:
+                        product_weight = line.qty_done
+            line.product_weight = product_weight
 
 
 
@@ -322,12 +328,6 @@ class StockMove(models.Model):
                 lot_name="\n".join(lot_name)
                 move.lot_name = lot_name
 
-                print(lot_name)
-
-
-                #if ch:
-                #    move.lot_name = ch
-
 
 
     note = fields.Text('Notes')
@@ -395,8 +395,6 @@ class StockMove(models.Model):
             for line in move.move_line_ids:
                 weight += line.weight
                 product_weight += line.product_weight
-
-
             if weight:
                 move.weight = weight
                 move.weight_uom_id =  move.move_line_ids[0].weight_uom_id.id

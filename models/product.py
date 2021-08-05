@@ -301,16 +301,18 @@ class ProductTemplate(models.Model):
 
     mois_fromage_all = fields.Many2many('mois.fromage','all_product_mois_fromage_rel','product_id','mois_fromage_id', string='Tous les Mois du fromage', compute=ts_mois_fromage)
 
+
     @api.onchange('uom_po_id', 'uom_id')
     @api.depends('uom_po_id', 'uom_id')
     @api.multi
     def onchange_poids_net(self):
-        self.weight = self.uom_id.factor_inv
-        self.weight_uom_id = self.env['uom.uom'].search(
-            [('category_id', '=', self.uom_id.category_id.id), ('uom_type', '=', 'reference')], limit=1).id
+        for obj in self:
+            obj.weight = obj.uom_id.factor_inv
+            obj.weight_uom_id = obj.env['uom.uom'].search(
+                [('category_id', '=', obj.uom_id.category_id.id), ('uom_type', '=', 'reference')], limit=1).id
+
 
     weight_uom_id = fields.Many2one('uom.uom', 'UV', default=False, readonly=False, store=True, compute=onchange_poids_net)
-
     weight = fields.Float('Nbr PC / Colis', digits=dp.get_precision('Stock Weight'))
     product_weight = fields.Float('Poids Net / Colis', digits=dp.get_precision('Stock Weight'), help="Poids Fixe de l'entité avec unité de mesure de stockage Colis / Pièce / Kg", copy=True)
 
